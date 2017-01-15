@@ -26,7 +26,7 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Generate()
         {
-            //環境変数(ORACLE_HOME)が設定されていないため、tnsname.oraを参照しません。
+            // TODO:環境変数(ORACLE_HOME)が設定されていないため、tnsname.oraを参照しません。
             var connBuilder = new OracleConnectionStringBuilder()
             {
                 UserID = "DEMO",
@@ -34,7 +34,7 @@ namespace EntityGenerator.ViewModels
                 DataSource = "XE"
             };
             //using (var conn = new OracleConnection(connBuilder.ToString()))
-            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new TraceDbProfiler()))
+            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new CompositeDbProfiler(new TraceDbProfiler())))
             {
                 conn.Query(@"SELECT * FROM USER_TABLES")
                     .ToList()

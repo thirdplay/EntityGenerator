@@ -72,10 +72,6 @@
       <HintPath>..\packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MiniProfiler.Integrations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0e789b781a1e1dbb, processorArchitecture=MSIL">
-      <HintPath>..\packages\MiniProfiler.Integrations.2.2.0\lib\MiniProfiler.Integrations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.24160719\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
@@ -114,6 +110,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configs\DapperConfig.cs" />
+    <Compile Include="DbProfilers\TraceDbProfiler.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -1,18 +1,11 @@
 ﻿using Dapper;
+using EntityGenerator.DbProfilers;
 using Livet;
-using MiniProfiler.Integrations;
 using Oracle.ManagedDataAccess.Client;
 using StackExchange.Profiling.Data;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Data.Common;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace EntityGenerator.ViewModels
 {
@@ -41,28 +34,16 @@ namespace EntityGenerator.ViewModels
                 DataSource = "XE"
             };
             //using (var conn = new OracleConnection(connBuilder.ToString()))
-            using (var conn = CreateOracleConnection(connBuilder.ToString(), CustomDbProfiler.Current))
+            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new TraceDbProfiler()))
             {
-                conn.Query("SELECT * FROM user_tables")
+                conn.Query(@"SELECT * FROM USER_TABLES")
                     .ToList()
                     .ForEach(x => Console.WriteLine($"TABLE_NAME:{x.TABLE_NAME}"));
 
-                conn.Query<UserInfo>("select * from USER_INFO")
+                conn.Query<UserInfo>(@"SELECT * FROM USER_INFO WHERE USER_ID = :UserId", new { UserId = "test" })
                     .ToList()
-                    .ForEach(x => Console.WriteLine($"UserId:{x}"));
-
-                foreach (var command in CustomDbProfiler.Current.ProfilerContext.ExecutedCommands)
-                {
-                    Console.WriteLine(command.ExtractToText());
-                }
+                    .ForEach(x => Console.WriteLine($"UserId:{x.UserId}"));
             }
-        }
-
-        private DbConnection CreateOracleConnection(string connectionString, IDbProfiler dbProfiler)
-        {
-            var connection = new ProfiledDbConnection(new OracleConnection(connectionString), dbProfiler);
-            //connection.Open();
-            return connection;
         }
     }
 

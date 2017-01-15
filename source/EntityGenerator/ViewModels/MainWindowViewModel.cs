@@ -2,6 +2,7 @@
 using EntityGenerator.DbProfilers;
 using Livet;
 using Oracle.ManagedDataAccess.Client;
+using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,8 +34,7 @@ namespace EntityGenerator.ViewModels
                 Password = "DEMO",
                 DataSource = "XE"
             };
-            //using (var conn = new OracleConnection(connBuilder.ToString()))
-            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new CompositeDbProfiler(new TraceDbProfiler())))
+            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new CompositeDbProfiler(MiniProfiler.Current, new TraceDbProfiler())))
             {
                 conn.Query(@"SELECT * FROM USER_TABLES")
                     .ToList()

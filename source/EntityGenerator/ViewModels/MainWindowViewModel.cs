@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EntityGenerator.DbProfilers;
+using EntityGenerator.Models;
 using Livet;
 using Oracle.ManagedDataAccess.Client;
 using StackExchange.Profiling;
@@ -28,13 +29,18 @@ namespace EntityGenerator.ViewModels
         public void Generate()
         {
             // TODO:環境変数(ORACLE_HOME)が設定されていないため、tnsname.oraを参照しません。
+
+            // TODO:
+            // 1. テーブル定義情報の取得
+            // 2. クラス定義情報の生成
+            // 3. エンティティモデルの生成
             var connBuilder = new OracleConnectionStringBuilder()
             {
                 UserID = "DEMO",
                 Password = "DEMO",
                 DataSource = "XE"
             };
-            using (var conn = new ProfiledDbConnection(new OracleConnection(connBuilder.ToString()), new CompositeDbProfiler(MiniProfiler.Current, new TraceDbProfiler())))
+            using (var conn = OracleConnectionFactory.CreateConnection(connBuilder.ToString()))
             {
                 conn.Query(@"SELECT * FROM USER_TABLES")
                     .ToList()
@@ -44,6 +50,9 @@ namespace EntityGenerator.ViewModels
                     .ToList()
                     .ForEach(x => Console.WriteLine($"UserId:{x.UserId}"));
             }
+
+            var generator = new Models.EntityGenerator();
+            generator.Generate();
         }
     }
 

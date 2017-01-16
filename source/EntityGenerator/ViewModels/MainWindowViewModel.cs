@@ -28,7 +28,8 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Generate()
         {
-            // TODO:環境変数(ORACLE_HOME)が設定されていないため、tnsname.oraを参照しません。
+            // TODO:
+            // 環境変数(ORACLE_HOME)が設定されていないため、tnsname.oraを参照しません。
 
             // TODO:
             // 1. テーブル定義情報の取得

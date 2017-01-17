@@ -3,6 +3,7 @@ using StackExchange.Profiling.Data;
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace EntityGenerator.DbProfilers
@@ -36,7 +37,7 @@ namespace EntityGenerator.DbProfilers
             var sb = new StringBuilder();
             foreach (OracleParameter param in profiledDbCommand.Parameters)
             {
-                sb.Append($"{param.ParameterName}: {param.Value},");
+                sb.Append($"{param.ParameterName}:{param.Value},");
             }
             this.parameters = "{" + sb.ToString() + "}";
 

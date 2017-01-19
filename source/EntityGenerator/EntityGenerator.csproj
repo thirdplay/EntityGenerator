@@ -115,6 +115,7 @@
     <Compile Include="Models\EntityGenerator.cs" />
     <Compile Include="Models\EntityTemplate.cs" />
     <Compile Include="Models\OracleConnectionFactory.cs" />
+    <Compile Include="Models\TableDefinition.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

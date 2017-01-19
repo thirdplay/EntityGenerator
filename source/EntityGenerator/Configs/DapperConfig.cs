@@ -24,6 +24,14 @@ namespace EntityGenerator.Configs
             {
                 SqlMapper.SetTypeMap(target, new CustomPropertyTypeMap(target, (type, columnName) =>
                 {
+                    // TODO
+                    // 1. columnNameをPascalCaseに変換する
+                    //   TABLE_NAME => TableName
+                    //   table_name => TableName
+                    //   tableName  => TableName
+                    //
+                    // 2. propertyName == columnName
+                    // 3. ColumnAttribute?
                     return type.GetProperties()
                         .FirstOrDefault(prop =>
                             prop.GetCustomAttributes(false)

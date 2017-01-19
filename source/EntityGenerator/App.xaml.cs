@@ -23,6 +23,7 @@ namespace EntityGenerator
 
             // Dapperのマッピング設定
             DapperConfig.RegisterMappings("EntityGenerator.ViewModels");
+            DapperConfig.RegisterMappings("EntityGenerator.Models");
 
             // 親メソッド呼び出し
             base.OnStartup(e);

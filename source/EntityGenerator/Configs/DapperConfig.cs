@@ -28,18 +28,31 @@ namespace EntityGenerator.Configs
                     // 1. columnNameをPascalCaseに変換する
                     //   TABLE_NAME => TableName
                     //   table_name => TableName
-                    //   tableName  => TableName
                     //
-                    // 2. propertyName == columnName
-                    // 3. ColumnAttribute?
                     return type.GetProperties()
-                        .FirstOrDefault(prop =>
-                            prop.GetCustomAttributes(false)
+                        .FirstOrDefault(x =>
+                            x.GetCustomAttributes(false)
                                 .OfType<ColumnAttribute>()
                                 .Any(attr => attr.Name == columnName)
                     );
                 }));
             }
         }
+        ///// <summary>
+        ///// スネークケースをパスカルケースに変換します
+        ///// 例) quoted_printable_encode → QuotedPrintableEncode
+        ///// </summary>
+        //public static string SnakeToPascal(this string self)
+        //{
+        //    if (string.IsNullOrEmpty(self))
+        //    {
+        //        return self;
+        //    }
+
+        //    return self
+        //        .Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries)
+        //        .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
+        //        .Aggregate(string.Empty, (s1, s2) => s1 + s2);
+        //}
     }
 }

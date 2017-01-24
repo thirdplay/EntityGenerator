@@ -116,6 +116,8 @@
     <Compile Include="Models\EntityTemplate.cs" />
     <Compile Include="Models\OracleConnectionFactory.cs" />
     <Compile Include="Models\TableDefinition.cs" />
+    <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\TableDefinitionRepository.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -155,9 +157,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Templetes\EntityTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

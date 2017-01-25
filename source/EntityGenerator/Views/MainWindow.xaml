@@ -11,12 +11,20 @@
                    WindowStartupLocation="CenterScreen"
                    Background="{DynamicResource ThemeBrushKey}"
 	               Foreground="{DynamicResource ActiveForegroundBrushKey}"
-                   Height="350"
-                   Width="525"
+                   Height="480"
+                   Width="640"
                    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}">
     <metro:MetroWindow.DataContext>
         <vm:MainWindowViewModel />
     </metro:MetroWindow.DataContext>
+
+    <metro:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </metro:MetroWindow.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
@@ -26,6 +34,11 @@
         <i:EventTrigger EventName="Closed">
             <l:DataContextDisposeAction/>
         </i:EventTrigger>
+
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}"
+                                     MessageKey="FolderDialog.Open">
+            <l:FolderBrowserDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
@@ -49,13 +62,72 @@
         </DockPanel>
         <!-- #endregion  -->
 
-        <Grid Grid.Row="1">
-            <Button x:Name="_buttonOk"
-                        Content="生成"
-                        MinWidth="90"
-                        Margin="4,2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
+        <StackPanel Grid.Row="1"
+                    Margin="16,0">
+            <TextBlock Text="接続情報"
+                       Style="{DynamicResource HeaderTextStyleKey}" />
+            <Grid Style="{DynamicResource ContentPanelStyleKey}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Column="0" Columns="1">
+                    <TextBlock Text="接続識別子: " />
+                    <TextBlock Text="ユーザID: " />
+                    <TextBlock Text="パスワード: "/>
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="1" Columns="1">
+                    <metro:PromptTextBox Prompt="接続識別子"
+                                         Margin="0,2"
+                                         Text="{Binding DataSource, Mode=TwoWay}" />
+                    <metro:PromptTextBox Prompt="ユーザID"
+                                         Margin="0,2"
+                                         Text="{Binding UserId, Mode=TwoWay}" />
+                    <metro:PromptTextBox Prompt="パスワード"
+                                         Margin="0,2"
+                                         Text="{Binding Password, Mode=TwoWay}" />
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="2" Columns="1">
+                    <Button Content="検索"
+                            MinWidth="90"
+                            Margin="4,2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                 MethodName="Generate" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </UniformGrid>
+            </Grid>
+            <TreeView Height="200" Background="{DynamicResource ThemeBrushKey}" BorderBrush="{DynamicResource ActiveBorderBrushKey}">
+                <TreeViewItem Header="テーブル" IsExpanded="True" Foreground="{DynamicResource ActiveForegroundBrushKey}">
+                    <CheckBox Content="項目1" />
+                    <CheckBox Content="項目2" />
+                    <CheckBox Content="項目3" />
+                </TreeViewItem>
+                <TreeViewItem Header="テーブル2" Foreground="{DynamicResource ActiveForegroundBrushKey}">
+                    <TreeViewItem Header="テーブル3" Foreground="{DynamicResource ActiveForegroundBrushKey}">
+                        <CheckBox Content="項目4" />
+                    </TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+            <Button Content="生成"
+                            MinWidth="90"
+                            Margin="4,2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <l:LivetCallMethodAction MethodTarget="{Binding}"
@@ -63,6 +135,6 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-        </Grid>
+        </StackPanel>
     </Grid>
 </metro:MetroWindow>

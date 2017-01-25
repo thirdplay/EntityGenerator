@@ -2,6 +2,8 @@
 using EntityGenerator.Templetes;
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EntityGenerator.Models
 {
@@ -14,21 +16,16 @@ namespace EntityGenerator.Models
         /// エンティティを生成します。
         /// </summary>
         /// <param name="connectionString">接続文字列</param>
-        public void Generate(string userId, string password, string dataSource)
+        public void Generate(OracleConnectionStringBuilder builder)
         {
-            var builder = new OracleConnectionStringBuilder()
-            {
-                UserID = userId,
-                Password = password,
-                DataSource = dataSource
-            };
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
                 // テーブル定義情報の取得
                 var repository = new TableDefinitionRepository(conn);
-                var list = repository.FindAll(userId);
+                var tables = repository.FindAll(builder.UserID);
 
                 // クラス定義情報の生成
+                //var classes = GetClassDefinition(tables);
                 //ClassDefinition
                 //PropertyDefinition
             }
@@ -49,10 +46,22 @@ namespace EntityGenerator.Models
             // 結果の出力
             System.Diagnostics.Debug.WriteLine(generatedText);
             Console.WriteLine(generatedText);
-
-            //    conn.Query<UserInfo>(@"SELECT * FROM USER_INFO WHERE USER_ID = :UserId", new { UserId = "test" })
-            //        .ToList()
-            //        .ForEach(x => Console.WriteLine($"UserId:{x.UserId}"));
         }
+
+        //private IEnumerable<ClassDefinition> GetClassDefinition(IEnumerable<TableDefinition> tables)
+        //{
+        //    var tableNames = tables.Select(x => x.TableName).Distinct();
+
+        //    var list = new List<ClassDefinition>();
+        //    foreach (var tableName in tableNames)
+        //    {
+        //        var definition = new ClassDefinition()
+        //        {
+        //            Name = tableName,
+        //        };
+        //        list.Add(definition);
+        //    }
+        //    return null;
+        //}
     }
 }

@@ -22,10 +22,10 @@ namespace EntityGenerator.Models
             {
                 // テーブル定義情報の取得
                 var repository = new TableDefinitionRepository(conn);
-                var tables = repository.FindAll(builder.UserID);
+                var tableDefinitinos = repository.FindAll(builder.UserID);
 
                 // クラス定義情報の生成
-                //var classes = GetClassDefinition(tables);
+                //var classes = GetClassDefinition(tableDefinitinos);
                 //ClassDefinition
                 //PropertyDefinition
             }
@@ -48,20 +48,20 @@ namespace EntityGenerator.Models
             Console.WriteLine(generatedText);
         }
 
-        //private IEnumerable<ClassDefinition> GetClassDefinition(IEnumerable<TableDefinition> tables)
-        //{
-        //    var tableNames = tables.Select(x => x.TableName).Distinct();
+        private IEnumerable<ClassDefinition> GetClassDefinition(IEnumerable<TableDefinition> tableDefinitions)
+        {
+            var tableNames = tableDefinitions.Select(x => x.TableName).Distinct();
 
-        //    var list = new List<ClassDefinition>();
-        //    foreach (var tableName in tableNames)
-        //    {
-        //        var definition = new ClassDefinition()
-        //        {
-        //            Name = tableName,
-        //        };
-        //        list.Add(definition);
-        //    }
-        //    return null;
-        //}
+            var list = new List<ClassDefinition>();
+            foreach (var tableName in tableNames)
+            {
+                var definition = new ClassDefinition()
+                {
+                    Name = tableName,
+                };
+                list.Add(definition);
+            }
+            return null;
+        }
     }
 }

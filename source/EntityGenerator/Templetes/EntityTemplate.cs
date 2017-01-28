@@ -40,25 +40,83 @@ namespace EntityGenerator.Templetes
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OracleDemo.Models
-{
-    /// <summary>
-    /// ユーザ情報。
-    /// </summary>
-    [Table(""USER_INFO"")]
-    public class User
-    {
-        /// <summary>
-        /// ユーザID。
-        /// </summary>
-        [Key]
-        [Required]
-        [StringLength(8)]
-        [Display(Name = ""ユーザID"")]
-        [Column(""USER_ID"")]
-        public string UserId { get; set; }
-    }
-}");
+namespace ");
+            
+            #line 19 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ClassDefinition.Namespace));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n{\r\n");
+            
+            #line 21 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+ if (!string.IsNullOrEmpty(ClassDefinition.Description)) { 
+            
+            #line default
+            #line hidden
+            this.Write("    /// <summary>\r\n    /// ");
+            
+            #line 23 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ClassDefinition.Description));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    /// </summary>\r\n");
+            
+            #line 25 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("    public class ");
+            
+            #line 26 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ClassDefinition.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    {\r\n");
+            
+            #line 28 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+
+	foreach(var property in ClassDefinition.Properties)
+	{
+		if (!string.IsNullOrEmpty(property.Description)) {
+
+            
+            #line default
+            #line hidden
+            this.Write("        /// <summary>\r\n        /// ");
+            
+            #line 34 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Description));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        /// </summary>\r\n");
+            
+            #line 36 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+		}
+            
+            #line default
+            #line hidden
+            this.Write("        public string ");
+            
+            #line 37 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get; set; }\r\n\r\n");
+            
+            #line 39 "D:\git\EntityGenerator\source\EntityGenerator\Templetes\EntityTemplate.tt"
+
+	}
+
+            
+            #line default
+            #line hidden
+            this.Write("    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

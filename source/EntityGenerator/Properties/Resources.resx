@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,52 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Sql_SelectTableDefinition" xml:space="preserve">
+    <value>select
+    TC.TABLE_NAME,
+    TABC.COMMENTS as TABLE_COMMENTS,
+    TC.OWNER,
+    TC.COLUMN_NAME,
+    COLC.COMMENTS as COLUMN_COMMENTS,
+    TC.DATA_TYPE,
+    TC.DATA_DEFAULT,
+    TC.NULLABLE,
+    TC.COLUMN_ID,
+    TC.DATA_LENGTH,
+    TC.DATA_SCALE,
+    TC.DATA_PRECISION,
+    C.CONSTRAINT_TYPE,
+    CC.POSITION
+from ALL_TAB_COLUMNS TC
+    inner join ALL_TAB_COMMENTS TABC on(
+        TABC.OWNER = TC.OWNER
+        and TABC.TABLE_NAME = TC.TABLE_NAME
+    )
+    inner join ALL_COL_COMMENTS COLC on(
+        COLC.OWNER = TC.OWNER
+        and COLC.TABLE_NAME = TC.TABLE_NAME
+        and COLC.COLUMN_NAME = TC.COLUMN_NAME
+    )
+    left join (
+        ALL_CONS_COLUMNS CC INNER JOIN ALL_CONSTRAINTS C on(
+            CC.CONSTRAINT_NAME = C.CONSTRAINT_NAME
+            and CC.TABLE_NAME = C.TABLE_NAME
+            and CC.OWNER = C.OWNER
+            and C.CONSTRAINT_TYPE = 'P'
+        )
+    ) on (
+        TC.TABLE_NAME = CC.TABLE_NAME
+        and TC.COLUMN_NAME = CC.COLUMN_NAME
+    )
+where
+    TC.OWNER = 'DEMO' 
+order by
+    TC.TABLE_NAME, TC.COLUMN_ID</value>
+    <comment>テーブル定義の取得SQL</comment>
+  </data>
 </root>

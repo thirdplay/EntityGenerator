@@ -1,4 +1,5 @@
-﻿using EntityGenerator.Repositories;
+﻿using EntityGenerator.Entities;
+using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -18,50 +19,68 @@ namespace EntityGenerator.Models
         /// <param name="connectionString">接続文字列</param>
         public void Generate(OracleConnectionStringBuilder builder)
         {
+            var tableNames = new string[] { "USER_INFO" };
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
-                // テーブル定義情報の取得
                 var repository = new TableDefinitionRepository(conn);
-                var tableDefinitinos = repository.FindAll(builder.UserID);
 
-                // クラス定義情報の生成
-                //var classes = GetClassDefinition(tableDefinitinos);
-                //ClassDefinition
-                //PropertyDefinition
+                foreach (var tableName in tableNames)
+                {
+                    // テーブル定義情報の取得
+                    var tableDefinitinos = repository.FindAll(builder.UserID, tableName);
+
+                    // クラス定義情報の生成
+                    var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
+
+                    // 実行時テンプレートをインスタンス化する
+                    // 実行時テンプレートはカスタムツールは"TextTemplatingFilePreprocessor"として
+                    // 設定されており、テンプレートの保存時に実行時テンプレートクラスに変換される.
+                    var tmpl = new EntityTemplate()
+                    {
+                        ClassDefinition = classDefinition
+                    };
+
+                    // テンプレートを評価する.
+                    string generatedText = tmpl.TransformText();
+
+                    // エンティティモデルの生成
+                    // 結果の出力
+                    System.Diagnostics.Debug.WriteLine(generatedText);
+                    Console.WriteLine(generatedText);
+                }
             }
 
-            // 実行時テンプレートをインスタンス化する
-            // 実行時テンプレートはカスタムツールは"TextTemplatingFilePreprocessor"として
-            // 設定されており、テンプレートの保存時に実行時テンプレートクラスに変換される.
-            var tmpl = new EntityTemplate();
-
-            // partial classで宣言したメンバ変数に対して値を入れる.
-            //tmpl.Title = "Hello, T4 RuntimeTemplate!";
-            //tmpl.Items = new List<string>() { "aaa", "bbb", "ccc" };
-
-            // テンプレートを評価する.
-            string generatedText = tmpl.TransformText();
-
-            // エンティティモデルの生成
-            // 結果の出力
-            System.Diagnostics.Debug.WriteLine(generatedText);
-            Console.WriteLine(generatedText);
         }
 
-        private IEnumerable<ClassDefinition> GetClassDefinition(IEnumerable<TableDefinition> tableDefinitions)
+        /// <summary>
+        /// テーブル定義に従い、クラス定義を取得します。
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="tableDefinitions"></param>
+        /// <returns>クラス定義</returns>
+        private ClassDefinition GetClassDefinition(string tableName, IEnumerable<TableDefinition> tableDefinitions)
         {
-            var tableNames = tableDefinitions.Select(x => x.TableName).Distinct();
-
-            var list = new List<ClassDefinition>();
-            foreach (var tableName in tableNames)
+            // クラス定義の生成
+            var firstDefinition = tableDefinitions.First();
+            var classDefinition = new ClassDefinition()
             {
-                var definition = new ClassDefinition()
+                Name = firstDefinition.TableName.SnakeToPascal(),
+                Description = firstDefinition.TableComments
+            };
+
+            // プロパティ定義の生成
+            classDefinition.Properties = new List<PropertyDefinition>();
+            foreach (var tableDefinition in tableDefinitions)
+            {
+                var property = new PropertyDefinition()
                 {
-                    Name = tableName,
+                    Name = tableDefinition.ColumnName.SnakeToPascal(),
+                    Description = tableDefinition.ColumnComments
                 };
-                list.Add(definition);
+                classDefinition.Properties.Add(property);
             }
-            return null;
+
+            return classDefinition;
         }
     }
 }

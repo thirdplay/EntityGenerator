@@ -16,22 +16,28 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OracleDemo.Models
+namespace <#= ClassDefinition.Namespace #>
 {
+<# if (!string.IsNullOrEmpty(ClassDefinition.Description)) { #>
     /// <summary>
-    /// ユーザ情報。
+    /// <#= ClassDefinition.Description #>
     /// </summary>
-    [Table("USER_INFO")]
-    public class User
+<# } #>
+    public class <#= ClassDefinition.Name #>
     {
+<#
+	foreach(var property in ClassDefinition.Properties)
+	{
+		if (!string.IsNullOrEmpty(property.Description)) {
+#>
         /// <summary>
-        /// ユーザID。
+        /// <#= property.Description #>
         /// </summary>
-        [Key]
-        [Required]
-        [StringLength(8)]
-        [Display(Name = "ユーザID")]
-        [Column("USER_ID")]
-        public string UserId { get; set; }
+<#		}#>
+        public string <#= property.Name #> { get; set; }
+
+<#
+	}
+#>
     }
 }

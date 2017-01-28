@@ -7,28 +7,23 @@ using System.Threading.Tasks;
 namespace EntityGenerator.Models
 {
     /// <summary>
-    /// クラス定義を表すクラス。
+    /// プロパティ定義を表すクラス。
     /// </summary>
-    public class ClassDefinition
+    public class PropertyDefinition
     {
         /// <summary>
-        /// ネームスペース。
-        /// </summary>
-        public string Namespace { get; set; } = "OracleDemo.Models";
-
-        /// <summary>
-        /// クラス名称。
+        /// プロパティ名称。
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// クラスの説明。
+        /// プロパティの説明。
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// プロパティのリスト。
+        /// プロパティの型。
         /// </summary>
-        public List<PropertyDefinition> Properties { get; set; }
+        public string TypeName { get; set; }
     }
 }

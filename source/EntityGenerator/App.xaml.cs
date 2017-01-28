@@ -22,8 +22,7 @@ namespace EntityGenerator
             DispatcherHelper.UIDispatcher = this.Dispatcher;
 
             // Dapperのマッピング設定
-            DapperConfig.RegisterMappings("EntityGenerator.ViewModels");
-            DapperConfig.RegisterMappings("EntityGenerator.Models");
+            DapperConfig.RegisterMappings("EntityGenerator.Entities");
 
             // 親メソッド呼び出し
             base.OnStartup(e);

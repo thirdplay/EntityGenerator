@@ -126,7 +126,9 @@
     <Compile Include="Models\EntityTemplate.cs" />
     <Compile Include="Models\Helper.cs" />
     <Compile Include="Models\OracleConnectionFactory.cs" />
-    <Compile Include="Models\TableDefinition.cs" />
+    <Compile Include="Entities\TableDefinition.cs" />
+    <Compile Include="Models\PropertyDefinition.cs" />
+    <Compile Include="Models\StringExtensions.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\TableDefinitionRepository.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">

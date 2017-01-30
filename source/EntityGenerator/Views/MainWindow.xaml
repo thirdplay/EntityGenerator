@@ -11,7 +11,7 @@
                    WindowStartupLocation="CenterScreen"
                    Background="{DynamicResource ThemeBrushKey}"
 	               Foreground="{DynamicResource ActiveForegroundBrushKey}"
-                   Height="200"
+                   Height="480"
                    Width="640"
                    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}">
     <metro:MetroWindow.DataContext>
@@ -98,7 +98,7 @@
                 </UniformGrid>
 
                 <UniformGrid Grid.Column="2" Columns="1">
-                    <Button Content="生成"
+                    <Button Content="検索"
                             MinWidth="90"
                             Margin="4,2"
                             HorizontalAlignment="Left"
@@ -106,13 +106,13 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <l:LivetCallMethodAction MethodTarget="{Binding}"
-                                                         MethodName="Generate" />
+                                                         MethodName="Search" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
                 </UniformGrid>
             </Grid>
-            <!--<TreeView Height="200" Background="{DynamicResource ThemeBrushKey}" BorderBrush="{DynamicResource ActiveBorderBrushKey}">
+            <TreeView Height="200" Background="{DynamicResource ThemeBrushKey}" BorderBrush="{DynamicResource ActiveBorderBrushKey}">
                 <TreeViewItem Header="テーブル" IsExpanded="True" Foreground="{DynamicResource ActiveForegroundBrushKey}">
                     <CheckBox Content="項目1" />
                     <CheckBox Content="項目2" />
@@ -135,7 +135,7 @@
                                                  MethodName="Generate" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </Button>-->
+            </Button>
         </StackPanel>
     </Grid>
 </metro:MetroWindow>

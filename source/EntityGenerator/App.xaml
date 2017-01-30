@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Accents/Blue.xaml" />
 
-                <!--<ResourceDictionary Source="pack://application:,,,/WinCap;component/Styles/Controls.xaml" />-->
+                <!--<ResourceDictionary Source="pack://application:,,,/EntityGenerator;component/Styles/Controls.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

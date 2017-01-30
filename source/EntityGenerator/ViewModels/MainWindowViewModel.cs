@@ -24,6 +24,11 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         private readonly Models.EntityGenerator generator;
 
+        /// <summary>
+        /// 接続文字列。
+        /// </summary>
+        private OracleConnectionStringBuilder builder;
+
         #region UserId 変更通知プロパティ
         private string _UserId;
         /// <summary>
@@ -97,6 +102,21 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Initialize()
         {
+        }
+
+        /// <summary>
+        /// テーブルを検索します。
+        /// </summary>
+        public void Search()
+        {
+            this.builder = new OracleConnectionStringBuilder()
+            {
+                UserID = this.UserId,
+                Password = this.Password,
+                DataSource = this.DataSource
+            };
+
+            //generator.SearchTable(this.builder);
         }
 
         /// <summary>

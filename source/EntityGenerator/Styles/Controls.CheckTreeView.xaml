@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="{x:Type TreeView}">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <!--DataType="{x:Type local:CheckTreeSource}"-->
+                    <CheckBox Margin="1" IsChecked="{Binding IsChecked}" Click="CheckBox_Click">
+                        <TextBlock Text="{Binding Text}"/>
+                    </CheckBox>
+                </HierarchicalDataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

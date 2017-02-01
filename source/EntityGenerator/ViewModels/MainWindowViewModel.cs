@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using EntityGenerator.DbProfilers;
 using EntityGenerator.Models;
+using EntityGenerator.Views.Controls;
 using Livet;
 using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
@@ -86,6 +88,23 @@ namespace EntityGenerator.ViewModels
         }
         #endregion
 
+        #region Tables 変更通知プロパティ
+        private ObservableCollection<CheckTreeSource> _Tables;
+        public ObservableCollection<CheckTreeSource> Tables
+        {
+            get { return _Tables; }
+            set
+            { 
+                if (_Tables != value)
+                {
+                    _Tables = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+
         /// <summary>
         /// コンストラクタ。
         /// </summary>
@@ -95,6 +114,18 @@ namespace EntityGenerator.ViewModels
             this.DataSource = "XE";
             this.UserId = "DEMO";
             this.Password = "DEMO";
+
+            this.Tables = new ObservableCollection<CheckTreeSource>();
+            var item1 = new CheckTreeSource() { Text = "Item1", IsExpanded = true, IsChecked = false };
+            var item11 = new CheckTreeSource() { Text = "Item1-1", IsExpanded = true, IsChecked = false };
+            var item12 = new CheckTreeSource() { Text = "Item1-2", IsExpanded = true, IsChecked = false };
+            var item2 = new CheckTreeSource() { Text = "Item2", IsExpanded = false, IsChecked = false };
+            var item21 = new CheckTreeSource() { Text = "Item2-1", IsExpanded = true, IsChecked = false };
+            this.Tables.Add(item1);
+            this.Tables.Add(item2);
+            item1.Add(item11);
+            item1.Add(item12);
+            item2.Add(item21);
         }
 
         /// <summary>

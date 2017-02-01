@@ -7,6 +7,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
                    xmlns:vm="clr-namespace:EntityGenerator.ViewModels"
+                   xmlns:controls="clr-namespace:EntityGenerator.Views.Controls"
                    mc:Ignorable="d"
                    WindowStartupLocation="CenterScreen"
                    Background="{DynamicResource ThemeBrushKey}"
@@ -112,18 +113,9 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <TreeView Height="200" Background="{DynamicResource ThemeBrushKey}" BorderBrush="{DynamicResource ActiveBorderBrushKey}">
-                <TreeViewItem Header="テーブル" IsExpanded="True" Foreground="{DynamicResource ActiveForegroundBrushKey}">
-                    <CheckBox Content="項目1" />
-                    <CheckBox Content="項目2" />
-                    <CheckBox Content="項目3" />
-                </TreeViewItem>
-                <TreeViewItem Header="テーブル2" Foreground="{DynamicResource ActiveForegroundBrushKey}">
-                    <TreeViewItem Header="テーブル3" Foreground="{DynamicResource ActiveForegroundBrushKey}">
-                        <CheckBox Content="項目4" />
-                    </TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
+            <controls:CheckTreeView Height="200"
+                                    ItemsSource="{Binding Tables, Mode=TwoWay}">
+            </controls:CheckTreeView>
             <Button Content="生成"
                             MinWidth="90"
                             Margin="4,2"

@@ -1,13 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style TargetType="{x:Type TreeView}">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:EntityGenerator.Views.Controls">
+
+    <Style TargetType="{x:Type controls:CheckTreeView}">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBrushKey}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ActiveBorderBrushKey}" />
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <!--DataType="{x:Type local:CheckTreeSource}"-->
-                    <CheckBox Margin="1" IsChecked="{Binding IsChecked}" Click="CheckBox_Click">
+                <HierarchicalDataTemplate DataType="{x:Type controls:CheckTreeSource}" ItemsSource="{Binding Children}">
+                    <CheckBox Margin="1" IsChecked="{Binding IsChecked}">
                         <TextBlock Text="{Binding Text}"/>
                     </CheckBox>
+                    <!--
+                    Click="CheckBox_Click"
+                    -->
                 </HierarchicalDataTemplate>
             </Setter.Value>
         </Setter>

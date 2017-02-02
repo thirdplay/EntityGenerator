@@ -22,12 +22,12 @@ namespace EntityGenerator.Models
             var tableNames = new string[] { "USER_INFO" };
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
-                var repository = new TableDefinitionRepository(conn);
+                var repository = new DbDefinitionRepository(conn);
 
                 foreach (var tableName in tableNames)
                 {
                     // テーブル定義情報の取得
-                    var tableDefinitinos = repository.FindAll(builder.UserID, tableName);
+                    var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
 
                     // クラス定義情報の生成
                     var classDefinition = GetClassDefinition(tableName, tableDefinitinos);

@@ -155,9 +155,13 @@ from ALL_TAB_COLUMNS TC
         and TC.COLUMN_NAME = CC.COLUMN_NAME
     )
 where
-    TC.OWNER = 'DEMO' 
+    TC.OWNER = :OWNER
 order by
     TC.TABLE_NAME, TC.COLUMN_ID</value>
     <comment>テーブル定義の取得SQL</comment>
+  </data>
+  <data name="Sql_SelectTableName" xml:space="preserve">
+    <value>select TABLE_NAME from ALL_TABLES where OWNER = :OWNER order by TABLE_NAME</value>
+    <comment>テーブル名の取得SQL</comment>
   </data>
 </root>

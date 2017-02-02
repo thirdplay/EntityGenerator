@@ -13,6 +13,9 @@ namespace EntityGenerator.Views.Controls
     /// </summary>
     public class CheckTreeView : TreeView
     {
+        /// <summary>
+        /// 静的なコンストラクタ。
+        /// </summary>
         static CheckTreeView()
         {
         }

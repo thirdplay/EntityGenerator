@@ -39,7 +39,7 @@ namespace EntityGenerator.DbProfilers
             {
                 sb.Append($"{param.ParameterName}:{param.Value},");
             }
-            this.parameters = "{" + sb.ToString() + "}";
+            this.parameters = "{" + sb.ToString().Trim(',') + "}";
 
             if (executeType != SqlExecuteType.Reader)
             {

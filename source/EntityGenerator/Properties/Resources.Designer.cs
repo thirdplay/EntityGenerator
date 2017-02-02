@@ -88,5 +88,14 @@ namespace EntityGenerator.Properties {
                 return ResourceManager.GetString("Sql_SelectTableDefinition", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   select TABLE_NAME from ALL_TABLES where OWNER = :OWNER order by TABLE_NAME に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Sql_SelectTableName {
+            get {
+                return ResourceManager.GetString("Sql_SelectTableName", resourceCulture);
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
                     xmlns:controls="clr-namespace:EntityGenerator.Views.Controls">
 
     <Style TargetType="{x:Type controls:CheckTreeView}">
@@ -11,11 +13,14 @@
             <Setter.Value>
                 <HierarchicalDataTemplate DataType="{x:Type controls:CheckTreeSource}" ItemsSource="{Binding Children}">
                     <CheckBox Margin="1" IsChecked="{Binding IsChecked}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                         MethodName="OnClick" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <TextBlock Text="{Binding Text}"/>
                     </CheckBox>
-                    <!--
-                    Click="CheckBox_Click"
-                    -->
                 </HierarchicalDataTemplate>
             </Setter.Value>
         </Setter>

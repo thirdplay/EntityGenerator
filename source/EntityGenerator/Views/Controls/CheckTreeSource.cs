@@ -188,5 +188,14 @@ namespace EntityGenerator.Views.Controls
                 }
             }
         }
+
+        /// <summary>
+        /// クリック処理。
+        /// </summary>
+        public void OnClick()
+        {
+            this.UpdateChildStatus();
+            this.UpdateParentStatus();
+        }
     }
 }

@@ -15,7 +15,6 @@ namespace EntityGenerator.Views.Controls
     {
         static CheckTreeView()
         {
-            //DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckTreeView), new FrameworkPropertyMetadata(typeof(CheckTreeView)));
         }
 
         /// <summary>

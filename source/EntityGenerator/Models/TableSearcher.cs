@@ -1,4 +1,5 @@
-﻿using EntityGenerator.Repositories;
+﻿using EntityGenerator.Entities;
+using EntityGenerator.Repositories;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 
@@ -13,12 +14,13 @@ namespace EntityGenerator.Models
         /// テーブルを検索します。
         /// </summary>
         /// <param name="connectionString">接続文字列</param>
-        public IEnumerable<string> Search(OracleConnectionStringBuilder builder)
+        /// <returns>ユーザテーブルの列挙</returns>
+        public IEnumerable<UserTable> Search(OracleConnectionStringBuilder builder)
         {
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
-                var repository = new DbDefinitionRepository(conn);
-                return repository.FindTableNames(builder.UserID);
+                var repository = new DatabaseObjectRepository(conn);
+                return repository.FindUserTables();
             }
         }
     }

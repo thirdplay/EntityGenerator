@@ -90,11 +90,16 @@ namespace EntityGenerator.Properties {
         }
         
         /// <summary>
-        ///   select TABLE_NAME from ALL_TABLES where OWNER = :OWNER order by TABLE_NAME に類似しているローカライズされた文字列を検索します。
+        ///   select AT.OWNER, AT.TABLE_NAME
+        ///from ALL_TABLES AT
+        ///    inner join USER_USERS UU on(
+        ///        UU.USERNAME = AT.OWNER
+        ///    )
+        ///order by AT.OWNER, AT.TABLE_NAME に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string Sql_SelectTableName {
+        internal static string Sql_SelectUserTable {
             get {
-                return ResourceManager.GetString("Sql_SelectTableName", resourceCulture);
+                return ResourceManager.GetString("Sql_SelectUserTable", resourceCulture);
             }
         }
     }

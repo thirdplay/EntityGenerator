@@ -122,17 +122,6 @@ namespace EntityGenerator.ViewModels
             this.DataSource = "XE";
             this.UserId = "DEMO";
             this.Password = "DEMO";
-            //this.Tables = new ObservableCollection<CheckTreeSource>();
-            //var item1 = new CheckTreeSource() { Text = "Item1", IsExpanded = true, IsChecked = false };
-            //var item11 = new CheckTreeSource() { Text = "Item1-1", IsExpanded = true, IsChecked = false };
-            //var item12 = new CheckTreeSource() { Text = "Item1-2", IsExpanded = true, IsChecked = false };
-            //var item2 = new CheckTreeSource() { Text = "Item2", IsExpanded = false, IsChecked = false };
-            //var item21 = new CheckTreeSource() { Text = "Item2-1", IsExpanded = true, IsChecked = false };
-            //this.Tables.Add(item1);
-            //this.Tables.Add(item2);
-            //item1.Add(item11);
-            //item1.Add(item12);
-            //item2.Add(item21);
         }
 
         /// <summary>
@@ -155,6 +144,13 @@ namespace EntityGenerator.ViewModels
             };
 
             var tableNames = searcher.Search(this.builder);
+            var table = new CheckTreeSource() { Text = "テーブル" };
+            var demo = new CheckTreeSource() { Text = "DEMO" };
+            var item = new CheckTreeSource() { Text = "USER_INFO" };
+            table.Add(demo);
+            demo.Add(item);
+            this.Tables = new ObservableCollection<CheckTreeSource>();
+            this.Tables.Add(table);
             //テーブル
             //  + ユーザ
             //      + テーブル名1

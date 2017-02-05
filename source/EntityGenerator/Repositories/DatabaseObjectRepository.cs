@@ -7,27 +7,25 @@ using System.Data.Common;
 namespace EntityGenerator.Repositories
 {
     /// <summary>
-    /// データベース定義のアクセスを提供するリポジトリ。
+    /// データベースオブジェクトへのアクセスを提供するリポジトリ。
     /// </summary>
-    public class DbDefinitionRepository : RepositoryBase
+    public class DatabaseObjectRepository : RepositoryBase
     {
         /// <summary>
         /// コンストラクタ。
         /// </summary>
         /// <param name="connection">DB接続</param>
-        public DbDefinitionRepository(DbConnection connection) : base(connection)
+        public DatabaseObjectRepository(DbConnection connection) : base(connection)
         {
         }
 
         /// <summary>
-        /// 指定 <see cref="owner"/> のテーブル名を全て取得します。
+        /// ユーザテーブルを全て取得します。
         /// </summary>
-        /// <param name="owner">オーナー</param>
-        /// <returns>テーブル名の列挙</returns>
-        public IEnumerable<string> FindTableNames(string owner)
+        /// <returns>ユーザテーブルの列挙</returns>
+        public IEnumerable<UserTable> FindUserTables()
         {
-            return this.Connection.Query<string>(
-                Resources.Sql_SelectTableName, new { Owner = owner });
+            return this.Connection.Query<UserTable>(Resources.Sql_SelectUserTable);
         }
 
         /// <summary>

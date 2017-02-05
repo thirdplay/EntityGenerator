@@ -104,6 +104,14 @@ namespace EntityGenerator.Views.Controls
         #endregion
 
         /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        public CheckTreeSource()
+        {
+            this.IsChecked = false;
+        }
+
+        /// <summary>
         /// 子要素を追加します。
         /// </summary>
         /// <param name="child">子要素</param>

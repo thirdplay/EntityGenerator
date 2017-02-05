@@ -22,7 +22,7 @@ namespace EntityGenerator.Models
             var tableNames = new string[] { "USER_INFO" };
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
-                var repository = new DbDefinitionRepository(conn);
+                var repository = new DatabaseObjectRepository(conn);
 
                 foreach (var tableName in tableNames)
                 {

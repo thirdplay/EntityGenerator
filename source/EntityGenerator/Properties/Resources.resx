@@ -160,8 +160,13 @@ order by
     TC.TABLE_NAME, TC.COLUMN_ID</value>
     <comment>テーブル定義の取得SQL</comment>
   </data>
-  <data name="Sql_SelectTableName" xml:space="preserve">
-    <value>select TABLE_NAME from ALL_TABLES where OWNER = :OWNER order by TABLE_NAME</value>
-    <comment>テーブル名の取得SQL</comment>
+  <data name="Sql_SelectUserTable" xml:space="preserve">
+    <value>select AT.OWNER, AT.TABLE_NAME
+from ALL_TABLES AT
+    inner join USER_USERS UU on(
+        UU.USERNAME = AT.OWNER
+    )
+order by AT.OWNER, AT.TABLE_NAME</value>
+    <comment>ユーザテーブルの取得SQL</comment>
   </data>
 </root>

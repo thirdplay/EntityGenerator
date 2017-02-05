@@ -129,6 +129,7 @@
     <Compile Include="Configs\DapperConfig.cs" />
     <Compile Include="DbProfilers\CompositeDbProfiler.cs" />
     <Compile Include="DbProfilers\TraceDbProfiler.cs" />
+    <Compile Include="Entities\UserTable.cs" />
     <Compile Include="Models\ClassDefinition.cs" />
     <Compile Include="Models\TableSearcher.cs" />
     <Compile Include="Models\EntityGenerator.cs" />
@@ -139,7 +140,7 @@
     <Compile Include="Models\PropertyDefinition.cs" />
     <Compile Include="Models\StringExtensions.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
-    <Compile Include="Repositories\DbDefinitionRepository.cs" />
+    <Compile Include="Repositories\DatabaseObjectRepository.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

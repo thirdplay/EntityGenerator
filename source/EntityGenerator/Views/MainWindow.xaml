@@ -114,7 +114,7 @@
                 </UniformGrid>
             </Grid>
             <controls:CheckTreeView Height="200"
-                                    ItemsSource="{Binding Tables, Mode=TwoWay}">
+                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}">
             </controls:CheckTreeView>
             <Button Content="生成"
                             MinWidth="90"

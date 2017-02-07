@@ -93,19 +93,19 @@ namespace EntityGenerator.ViewModels
         }
         #endregion
 
-        #region Tables 変更通知プロパティ
-        private ObservableCollection<CheckTreeSource> _Tables;
+        #region DatabaseObjects 変更通知プロパティ
+        private ObservableCollection<CheckTreeSource> _DatabaseObjects;
         /// <summary>
-        /// テーブル一覧を取得または設定します。
+        /// データベースオブジェクト一覧を取得または設定します。
         /// </summary>
-        public ObservableCollection<CheckTreeSource> Tables
+        public ObservableCollection<CheckTreeSource> DatabaseObjects
         {
-            get { return _Tables; }
+            get { return _DatabaseObjects; }
             set
             { 
-                if (_Tables != value)
+                if (_DatabaseObjects != value)
                 {
-                    _Tables = value;
+                    _DatabaseObjects = value;
                     RaisePropertyChanged();
                 }
             }
@@ -132,7 +132,7 @@ namespace EntityGenerator.ViewModels
         }
 
         /// <summary>
-        /// テーブルを検索します。
+        /// データベースオブジェクトを検索します。
         /// </summary>
         public void Search()
         {
@@ -143,20 +143,7 @@ namespace EntityGenerator.ViewModels
                 DataSource = this.DataSource
             };
 
-            var tableNames = searcher.Search(this.builder);
-            var table = new CheckTreeSource() { Text = "テーブル" };
-            var demo = new CheckTreeSource() { Text = "DEMO" };
-            var item = new CheckTreeSource() { Text = "USER_INFO" };
-            table.Add(demo);
-            demo.Add(item);
-            this.Tables = new ObservableCollection<CheckTreeSource>();
-            this.Tables.Add(table);
-            //テーブル
-            //  + ユーザ
-            //      + テーブル名1
-            //      + テーブル名2
-            //      + テーブル名3
-            //      + テーブル名4
+            this.DatabaseObjects = searcher.Search(this.builder);
         }
 
         /// <summary>

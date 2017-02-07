@@ -129,7 +129,7 @@
     <Compile Include="Configs\DapperConfig.cs" />
     <Compile Include="DbProfilers\CompositeDbProfiler.cs" />
     <Compile Include="DbProfilers\TraceDbProfiler.cs" />
-    <Compile Include="Entities\UserTable.cs" />
+    <Compile Include="Entities\DatabaseObject.cs" />
     <Compile Include="Models\ClassDefinition.cs" />
     <Compile Include="Models\TableSearcher.cs" />
     <Compile Include="Models\EntityGenerator.cs" />

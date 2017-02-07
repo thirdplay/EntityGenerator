@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace EntityGenerator.Entities
 {
     /// <summary>
-    /// ユーザテーブルを表すクラス。
+    /// データベースオブジェクトを表すクラス。
     /// </summary>
-    public class UserTable
+    public class DatabaseObject
     {
         /// <summary>
         /// オーナー
@@ -18,8 +18,8 @@ namespace EntityGenerator.Entities
         public string Owner { get; set; }
 
         /// <summary>
-        /// テーブル名
+        /// 名称
         /// </summary>
-        public string TableName { get; set; }
+        public string Name { get; set; }
     }
 }

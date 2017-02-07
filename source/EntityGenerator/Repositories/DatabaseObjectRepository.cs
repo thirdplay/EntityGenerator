@@ -23,9 +23,9 @@ namespace EntityGenerator.Repositories
         /// ユーザテーブルを全て取得します。
         /// </summary>
         /// <returns>ユーザテーブルの列挙</returns>
-        public IEnumerable<UserTable> FindUserTables()
+        public IEnumerable<DatabaseObject> FindUserTables()
         {
-            return this.Connection.Query<UserTable>(Resources.Sql_SelectUserTable);
+            return this.Connection.Query<DatabaseObject>(Resources.Sql_SelectUserTable);
         }
 
         /// <summary>

@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DatabaseObject_Table" xml:space="preserve">
+    <value>テーブル</value>
+  </data>
+  <data name="Sql_SelectDatabaseObject" xml:space="preserve">
+    <value>select AT.OWNER, AT.TABLE_NAME as NAME
+from ALL_TABLES AT
+    inner join USER_USERS UU on(
+        UU.USERNAME = AT.OWNER
+    )
+order by AT.OWNER, AT.TABLE_NAME</value>
+    <comment>データベースオブジェクトの取得SQL</comment>
+  </data>
   <data name="Sql_SelectTableDefinition" xml:space="preserve">
     <value>select
     TC.TABLE_NAME,
@@ -159,14 +171,5 @@ where
 order by
     TC.TABLE_NAME, TC.COLUMN_ID</value>
     <comment>テーブル定義の取得SQL</comment>
-  </data>
-  <data name="Sql_SelectUserTable" xml:space="preserve">
-    <value>select AT.OWNER, AT.TABLE_NAME
-from ALL_TABLES AT
-    inner join USER_USERS UU on(
-        UU.USERNAME = AT.OWNER
-    )
-order by AT.OWNER, AT.TABLE_NAME</value>
-    <comment>ユーザテーブルの取得SQL</comment>
   </data>
 </root>

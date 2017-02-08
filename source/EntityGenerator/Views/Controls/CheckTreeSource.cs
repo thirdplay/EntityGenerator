@@ -46,19 +46,19 @@ namespace EntityGenerator.Views.Controls
         }
         #endregion
 
-        #region Text 変更通知プロパティ
-        private string _Text;
+        #region Header 変更通知プロパティ
+        private string _Header;
         /// <summary>
-        /// 表示文字列を取得または設定します。
+        /// ラベルを取得または設定します。
         /// </summary>
-        public string Text
+        public string Header
         {
-            get { return _Text; }
+            get { return _Header; }
             set
             { 
-                if (_Text != value)
+                if (_Header != value)
                 {
-                    _Text = value;
+                    _Header = value;
                     RaisePropertyChanged();
                 }
             }
@@ -106,9 +106,13 @@ namespace EntityGenerator.Views.Controls
         /// <summary>
         /// コンストラクタ。
         /// </summary>
-        public CheckTreeSource()
+        /// <param name="header">ラベル</param>
+        /// <param name="isChecked">チェック状態</param>
+        public CheckTreeSource(string header = "", bool? isChecked = false)
         {
-            this.IsChecked = false;
+            this.Header = header;
+            this.IsChecked = isChecked;
+            this.Children = new ObservableCollection<CheckTreeSource>();
         }
 
         /// <summary>
@@ -117,7 +121,6 @@ namespace EntityGenerator.Views.Controls
         /// <param name="child">子要素</param>
         public void Add(CheckTreeSource child)
         {
-            this.Children = this.Children ?? new ObservableCollection<CheckTreeSource>();
             child.Parent = this;
             this.Children.Add(child);
         }

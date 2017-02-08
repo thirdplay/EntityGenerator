@@ -1,4 +1,5 @@
 ﻿using EntityGenerator.Models;
+using EntityGenerator.Properties;
 
 namespace EntityGenerator.Templetes
 {

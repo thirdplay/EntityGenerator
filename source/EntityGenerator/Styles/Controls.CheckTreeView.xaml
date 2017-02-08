@@ -19,7 +19,7 @@
                                                          MethodName="OnClick" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <TextBlock Text="{Binding Text}"/>
+                        <TextBlock Text="{Binding Header}"/>
                     </CheckBox>
                 </HierarchicalDataTemplate>
             </Setter.Value>

@@ -22,11 +22,6 @@ namespace EntityGenerator.ViewModels
     public class MainWindowViewModel : ViewModel
     {
         /// <summary>
-        /// テーブル検索クラス。
-        /// </summary>
-        private readonly TableSearcher searcher;
-
-        /// <summary>
         /// エンティティ生成クラス。
         /// </summary>
         private readonly Models.EntityGenerator generator;
@@ -117,11 +112,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            searcher = new TableSearcher();
             this.generator = new Models.EntityGenerator();
+#if DEBUG
             this.DataSource = "XE";
             this.UserId = "DEMO";
             this.Password = "DEMO";
+#endif
         }
 
         /// <summary>
@@ -143,7 +139,7 @@ namespace EntityGenerator.ViewModels
                 DataSource = this.DataSource
             };
 
-            this.DatabaseObjects = searcher.Search(this.builder);
+            this.DatabaseObjects = generator.Search(this.builder);
         }
 
         /// <summary>

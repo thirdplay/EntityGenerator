@@ -35,6 +35,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
@@ -131,7 +134,6 @@
     <Compile Include="DbProfilers\TraceDbProfiler.cs" />
     <Compile Include="Entities\DatabaseObject.cs" />
     <Compile Include="Models\ClassDefinition.cs" />
-    <Compile Include="Models\TableSearcher.cs" />
     <Compile Include="Models\EntityGenerator.cs" />
     <Compile Include="Models\EntityTemplate.cs" />
     <Compile Include="Models\Helper.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Entities\TableDefinition.cs" />
     <Compile Include="Models\PropertyDefinition.cs" />
     <Compile Include="Models\StringExtensions.cs" />
+    <Compile Include="Models\TypeConverter.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\DatabaseObjectRepository.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">
@@ -155,6 +158,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\ProductInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -184,6 +188,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Resource Include="Assets\app.ico" />
     <Content Include="Templetes\EntityTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>EntityTemplate.cs</LastGenOutput>

@@ -13,7 +13,7 @@ namespace EntityGenerator.Entities
     public class DatabaseObject
     {
         /// <summary>
-        /// オーナー
+        /// 所有者
         /// </summary>
         public string Owner { get; set; }
 

@@ -10,6 +10,7 @@
                    xmlns:controls="clr-namespace:EntityGenerator.Views.Controls"
                    mc:Ignorable="d"
                    WindowStartupLocation="CenterScreen"
+                   Icon="/EntityGenerator;component/assets/app.ico"
                    Background="{DynamicResource ThemeBrushKey}"
 	               Foreground="{DynamicResource ActiveForegroundBrushKey}"
                    Height="480"

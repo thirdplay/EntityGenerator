@@ -1,9 +1,12 @@
 ﻿using EntityGenerator.Entities;
+using EntityGenerator.Properties;
 using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
+using EntityGenerator.Views.Controls;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EntityGenerator.Models
@@ -13,6 +16,39 @@ namespace EntityGenerator.Models
     /// </summary>
     public class EntityGenerator
     {
+        /// <summary>
+        /// データベースオブジェクトを検索します。
+        /// </summary>
+        /// <param name="connectionString">接続文字列</param>
+        /// <returns>データベースオブジェクトのコレクション</returns>
+        public ObservableCollection<CheckTreeSource> Search(OracleConnectionStringBuilder builder)
+        {
+            using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
+            {
+                // データオブジェクトの検索
+                var repository = new DatabaseObjectRepository(conn);
+                var dataObjects = repository.FindDataObjects();
+
+                // ツリービューソースに変換する
+                var results = new ObservableCollection<CheckTreeSource>();
+                var table = new CheckTreeSource(Resources.DatabaseObject_Table, true);
+                var owners = dataObjects.Select(x => x.Owner).Distinct();
+                foreach(string owner in owners)
+                {
+                    var ownerNode = new CheckTreeSource(owner, true);
+                    var childs = dataObjects.Where(x => x.Owner == owner);
+                    foreach(var child in childs)
+                    {
+                        ownerNode.Add(new CheckTreeSource(child.Name, true));
+                    }
+                    table.Add(ownerNode);
+                }
+                results.Add(table);
+
+                return results;
+            }
+        }
+
         /// <summary>
         /// エンティティを生成します。
         /// </summary>
@@ -26,15 +62,11 @@ namespace EntityGenerator.Models
 
                 foreach (var tableName in tableNames)
                 {
-                    // テーブル定義情報の取得
-                    var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
-
                     // クラス定義情報の生成
+                    var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
                     var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
 
                     // 実行時テンプレートをインスタンス化する
-                    // 実行時テンプレートはカスタムツールは"TextTemplatingFilePreprocessor"として
-                    // 設定されており、テンプレートの保存時に実行時テンプレートクラスに変換される.
                     var tmpl = new EntityTemplate()
                     {
                         ClassDefinition = classDefinition
@@ -75,7 +107,8 @@ namespace EntityGenerator.Models
                 var property = new PropertyDefinition()
                 {
                     Name = tableDefinition.ColumnName.SnakeToPascal(),
-                    Description = tableDefinition.ColumnComments
+                    Description = tableDefinition.ColumnComments,
+                    TypeName = OracleTypeToCsTypeConverter.Convert(tableDefinition.DataType)
                 };
                 classDefinition.Properties.Add(property);
             }

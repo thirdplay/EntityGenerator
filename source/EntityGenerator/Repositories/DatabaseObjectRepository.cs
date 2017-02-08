@@ -20,12 +20,12 @@ namespace EntityGenerator.Repositories
         }
 
         /// <summary>
-        /// ユーザテーブルを全て取得します。
+        /// データオブジェクトを全て取得します。
         /// </summary>
-        /// <returns>ユーザテーブルの列挙</returns>
-        public IEnumerable<DatabaseObject> FindUserTables()
+        /// <returns>データオブジェクトの列挙</returns>
+        public IEnumerable<DatabaseObject> FindDataObjects()
         {
-            return this.Connection.Query<DatabaseObject>(Resources.Sql_SelectUserTable);
+            return this.Connection.Query<DatabaseObject>(Resources.Sql_SelectDatabaseObject);
         }
 
         /// <summary>

@@ -15,6 +15,8 @@
 	               Foreground="{DynamicResource ActiveForegroundBrushKey}"
                    Height="480"
                    Width="640"
+                   MinHeight="165"
+                   MinWidth="320"
                    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}">
     <metro:MetroWindow.DataContext>
         <vm:MainWindowViewModel />
@@ -46,6 +48,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- #region Caption area -->
@@ -65,11 +68,20 @@
         </DockPanel>
         <!-- #endregion  -->
 
-        <StackPanel Grid.Row="1"
-                    Margin="16,0">
-            <TextBlock Text="接続情報"
+        <Grid Grid.Row="1"
+              Margin="16,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="接続情報"
                        Style="{DynamicResource HeaderTextStyleKey}" />
-            <Grid Style="{DynamicResource ContentPanelStyleKey}">
+            <Grid Grid.Row="1"
+                  Style="{DynamicResource ContentPanelStyleKey}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -114,21 +126,27 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <controls:CheckTreeView Height="200"
-                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}">
-            </controls:CheckTreeView>
-            <Button Content="生成"
-                            MinWidth="90"
-                            Margin="4,2"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <l:LivetCallMethodAction MethodTarget="{Binding}"
-                                                 MethodName="Generate" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-        </StackPanel>
+            <controls:CheckTreeView Grid.Row="2"
+                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"/>
+
+            <StackPanel Grid.Row="3"
+                        DockPanel.Dock="Bottom"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,8,0,8">
+                <Button Content="生成"
+                                MinWidth="90"
+                                Margin="4,2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                     MethodName="Generate" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </metro:MetroWindow>

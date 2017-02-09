@@ -4,6 +4,11 @@
                     xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
                     xmlns:controls="clr-namespace:EntityGenerator.Views.Controls">
 
+    <Style TargetType="TreeViewItem">
+        <Setter Property="IsExpanded"
+                Value="{Binding IsExpanded, Mode=TwoWay}" />
+    </Style>
+
     <Style TargetType="{x:Type controls:CheckTreeView}">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBrushKey}" />

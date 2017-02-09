@@ -6,7 +6,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
-                   xmlns:vm="clr-namespace:EntityGenerator.ViewModels"
+                   xmlns:viewModels="clr-namespace:EntityGenerator.ViewModels"
                    xmlns:controls="clr-namespace:EntityGenerator.Views.Controls"
                    mc:Ignorable="d"
                    WindowStartupLocation="CenterScreen"
@@ -17,12 +17,16 @@
                    Width="640"
                    MinHeight="165"
                    MinWidth="320"
-                   d:DataContext="{d:DesignInstance vm:MainWindowViewModel}">
+                   d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <metro:MetroWindow.DataContext>
-        <vm:MainWindowViewModel />
+        <viewModels:MainWindowViewModel />
     </metro:MetroWindow.DataContext>
 
     <metro:MetroWindow.Resources>
+        <!--<Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded"
+                Value="{Binding IsExpanded, Mode=TwoWay}" />
+        </Style>-->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Common.xaml" />
@@ -126,8 +130,31 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <controls:CheckTreeView Grid.Row="2"
-                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"/>
+            <TreeView Grid.Row="2"
+                      Background="{DynamicResource ThemeBrushKey}"
+                      BorderBrush="{DynamicResource ActiveBorderBrushKey}"
+                      ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}">
+                <TreeView.Resources>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded"
+                                Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.Resources>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type viewModels:DataObjectViewModel}"
+                                              ItemsSource="{Binding Children}">
+                        <CheckBox Margin="1" IsChecked="{Binding IsChecked}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                             MethodName="OnClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <TextBlock Text="{Binding Header}"/>
+                        </CheckBox>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
 
             <StackPanel Grid.Row="3"
                         DockPanel.Dock="Bottom"
@@ -135,16 +162,18 @@
                         HorizontalAlignment="Right"
                         Margin="0,8,0,8">
                 <Button Content="生成"
-                                MinWidth="90"
-                                Margin="4,2"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom">
-                    <i:Interaction.Triggers>
+                        MinWidth="90"
+                        Margin="4,2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding GenerateCommand}"
+                        IsEnabled="{Binding GenerateCommand.CanExecute, UpdateSourceTrigger=LostFocus}">
+                    <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                      MethodName="Generate" />
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
                 </Button>
             </StackPanel>
         </Grid>

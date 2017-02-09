@@ -149,6 +149,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DataObjectViewModel.cs" />
     <Compile Include="Views\Controls\CheckTreeSource.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Controls\CheckTreeView.cs" />

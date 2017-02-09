@@ -1,18 +1,11 @@
-﻿using Dapper;
-using EntityGenerator.DbProfilers;
-using EntityGenerator.Models;
-using EntityGenerator.Views.Controls;
+﻿using EntityGenerator.Models;
 using Livet;
+using Livet.Commands;
 using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
-using StackExchange.Profiling;
-using StackExchange.Profiling.Data;
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace EntityGenerator.ViewModels
 {
@@ -89,11 +82,11 @@ namespace EntityGenerator.ViewModels
         #endregion
 
         #region DatabaseObjects 変更通知プロパティ
-        private ObservableCollection<CheckTreeSource> _DatabaseObjects;
+        private ObservableCollection<DataObjectViewModel> _DatabaseObjects;
         /// <summary>
         /// データベースオブジェクト一覧を取得または設定します。
         /// </summary>
-        public ObservableCollection<CheckTreeSource> DatabaseObjects
+        public ObservableCollection<DataObjectViewModel> DatabaseObjects
         {
             get { return _DatabaseObjects; }
             set
@@ -139,7 +132,38 @@ namespace EntityGenerator.ViewModels
                 DataSource = this.DataSource
             };
 
-            this.DatabaseObjects = generator.Search(this.builder);
+            this.DatabaseObjects = generator.SearchDataObjects(this.builder);
+        }
+
+        #region GenerateCommand
+        private ViewModelCommand _GenerateCommand;
+        /// <summary>
+        /// 生成コマンドを取得します。
+        /// </summary>
+        public ViewModelCommand GenerateCommand
+        {
+            get
+            {
+                if (this._GenerateCommand == null)
+                {
+                    this._GenerateCommand = new ViewModelCommand(this.Generate, this.CanGenerate);
+                }
+                return this._GenerateCommand;
+            }
+        }
+
+        /// <summary>
+        /// 生成できるかどうかを示す値を取得します。
+        /// </summary>
+        public bool CanGenerate()
+        {
+            if (this.DatabaseObjects != null)
+            {
+                return this.DatabaseObjects
+                    .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
+                    .Any();
+            }
+            return false;
         }
 
         /// <summary>
@@ -169,5 +193,6 @@ namespace EntityGenerator.ViewModels
             };
             generator.Generate(builder);
         }
+        #endregion
     }
 }

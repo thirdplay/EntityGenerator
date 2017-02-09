@@ -1,8 +1,7 @@
 ﻿using EntityGenerator.Entities;
-using EntityGenerator.Properties;
 using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
-using EntityGenerator.Views.Controls;
+using EntityGenerator.ViewModels;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace EntityGenerator.Models
         /// </summary>
         /// <param name="connectionString">接続文字列</param>
         /// <returns>データベースオブジェクトのコレクション</returns>
-        public ObservableCollection<CheckTreeSource> Search(OracleConnectionStringBuilder builder)
+        public ObservableCollection<DataObjectViewModel> SearchDataObjects(OracleConnectionStringBuilder builder)
         {
             using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
             {
@@ -30,20 +29,18 @@ namespace EntityGenerator.Models
                 var dataObjects = repository.FindDataObjects();
 
                 // ツリービューソースに変換する
-                var results = new ObservableCollection<CheckTreeSource>();
-                var table = new CheckTreeSource(Resources.DatabaseObject_Table, true);
+                var results = new ObservableCollection<DataObjectViewModel>();
                 var owners = dataObjects.Select(x => x.Owner).Distinct();
                 foreach(string owner in owners)
                 {
-                    var ownerNode = new CheckTreeSource(owner, true);
-                    var childs = dataObjects.Where(x => x.Owner == owner);
-                    foreach(var child in childs)
+                    var ownerNode = new DataObjectViewModel(owner, true);
+                    var childrens = dataObjects.Where(x => x.Owner == owner);
+                    foreach(var children in childrens)
                     {
-                        ownerNode.Add(new CheckTreeSource(child.Name, true));
+                        ownerNode.Add(new DataObjectViewModel(children.Name, true));
                     }
-                    table.Add(ownerNode);
+                    results.Add(ownerNode);
                 }
-                results.Add(table);
 
                 return results;
             }

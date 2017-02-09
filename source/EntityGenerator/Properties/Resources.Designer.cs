@@ -61,15 +61,6 @@ namespace EntityGenerator.Properties {
         }
         
         /// <summary>
-        ///   テーブル に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string DatabaseObject_Table {
-            get {
-                return ResourceManager.GetString("DatabaseObject_Table", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   select AT.OWNER, AT.TABLE_NAME as NAME
         ///from ALL_TABLES AT
         ///    inner join USER_USERS UU on(

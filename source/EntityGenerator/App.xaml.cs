@@ -1,4 +1,5 @@
 ﻿using EntityGenerator.Configs;
+using EntityGenerator.Properties;
 using Livet;
 using System;
 using System.Diagnostics;
@@ -13,19 +14,46 @@ namespace EntityGenerator
     public partial class App : Application
     {
         /// <summary>
+        /// 静的コンストラクタ。
+        /// </summary>
+        static App()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
+        }
+
+        /// <summary>
         /// 起動イベント。
         /// </summary>
         /// <param name="e">イベント引数</param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            // UIDispatcherの設定
-            DispatcherHelper.UIDispatcher = this.Dispatcher;
+//#if !DEBUG
+//            // 多重起動防止チェック
+//            var appInstance = new Util.Desktop.ApplicationInstance().AddTo(this);
+//            if (appInstance.IsFirst)
+//#endif
+            {
+                this.DispatcherUnhandledException += (sender, args) =>
+                {
+                    ReportException(sender, args.Exception);
+                    args.Handled = true;
+                };
 
-            // Dapperのマッピング設定
-            DapperConfig.RegisterMappings("EntityGenerator.Entities");
+                // UIDispatcherの設定
+                DispatcherHelper.UIDispatcher = this.Dispatcher;
 
-            // 親メソッド呼び出し
-            base.OnStartup(e);
+                // Dapperのマッピング設定
+                DapperConfig.RegisterMappings("EntityGenerator.Entities");
+
+                // 親メソッド呼び出し
+                base.OnStartup(e);
+            }
+//#if !DEBUG
+//            else
+//            {
+//                this.Shutdown();
+//            }
+//#endif
         }
 
         /// <summary>
@@ -41,7 +69,16 @@ namespace EntityGenerator
         }
 
         /// <summary>
-        /// 例外報告
+        /// 例外を表示します。
+        /// </summary>
+        /// <param name="ex">例外</param>
+        public static void ShowException(Exception ex)
+        {
+            MessageBox.Show(ex.Message, ProductInfo.Title);
+        }
+
+        /// <summary>
+        /// 例外を報告します。
         /// </summary>
         /// <param name="sender">イベント発生元</param>
         /// <param name="exception">例外</param>

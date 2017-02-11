@@ -23,10 +23,6 @@
     </metro:MetroWindow.DataContext>
 
     <metro:MetroWindow.Resources>
-        <!--<Style TargetType="TreeViewItem">
-            <Setter Property="IsExpanded"
-                Value="{Binding IsExpanded, Mode=TwoWay}" />
-        </Style>-->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Common.xaml" />
@@ -130,7 +126,9 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <TreeView Grid.Row="2"
+            <controls:CheckTreeView Grid.Row="2"
+                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}" />
+            <!--<TreeView Grid.Row="2"
                       Background="{DynamicResource ThemeBrushKey}"
                       BorderBrush="{DynamicResource ActiveBorderBrushKey}"
                       ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}">
@@ -154,7 +152,7 @@
                         </CheckBox>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
-            </TreeView>
+            </TreeView>-->
 
             <StackPanel Grid.Row="3"
                         DockPanel.Dock="Bottom"

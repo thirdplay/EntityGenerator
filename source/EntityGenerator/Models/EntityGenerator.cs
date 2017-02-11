@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace EntityGenerator.Models
 {
@@ -51,7 +50,7 @@ namespace EntityGenerator.Models
             }
             catch (Exception ex)
             {
-                App.ShowException(ex);
+                Application.ShowException(ex);
                 return new ObservableCollection<DataObjectViewModel>();
             }
         }
@@ -93,7 +92,7 @@ namespace EntityGenerator.Models
             }
             catch (Exception ex)
             {
-                App.ShowException(ex);
+                Application.ShowException(ex);
             }
         }
 

@@ -11,12 +11,12 @@ namespace EntityGenerator
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
-    public partial class App : Application
+    sealed partial class Application
     {
         /// <summary>
         /// 静的コンストラクタ。
         /// </summary>
-        static App()
+        static Application()
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
         }

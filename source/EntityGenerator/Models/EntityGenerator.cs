@@ -1,13 +1,13 @@
 ﻿using EntityGenerator.Entities;
-using EntityGenerator.Properties;
 using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
-using EntityGenerator.ViewModels;
 using EntityGenerator.Views.Controls;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace EntityGenerator.Models
@@ -59,12 +59,14 @@ namespace EntityGenerator.Models
         /// <summary>
         /// エンティティを生成します。
         /// </summary>
-        /// <param name="connectionString">接続文字列</param>
-        public void Generate(OracleConnectionStringBuilder builder)
+        /// <param name="outputDir">出力先ディレクトリ</param>
+        /// <param name="builder">接続文字列</param>
+        /// <param name="checkedItems">選択中の項目</param>
+        public void Generate(string outputDir, OracleConnectionStringBuilder builder, List<CheckTreeSource> checkedItems)
         {
             try
             {
-                var tableNames = new string[] { "USER_INFO" };
+                var tableNames = checkedItems.Where(x => x.Parent != null).Select(x => x.Header);
                 using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
                 {
                     var repository = new DatabaseObjectRepository(conn);
@@ -75,19 +77,16 @@ namespace EntityGenerator.Models
                         var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
                         var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
 
-                        // 実行時テンプレートをインスタンス化する
+                        // テンプレートを評価する
                         var tmpl = new EntityTemplate()
                         {
                             ClassDefinition = classDefinition
                         };
+                        var generatedText = tmpl.TransformText();
 
-                        // テンプレートを評価する.
-                        string generatedText = tmpl.TransformText();
-
-                        // エンティティモデルの生成
-                        // 結果の出力
-                        System.Diagnostics.Debug.WriteLine(generatedText);
-                        Console.WriteLine(generatedText);
+                        // エンティティモデルの出力
+                        Debug.WriteLine(generatedText);
+                        File.WriteAllText(Path.Combine(outputDir, tableName + ".cs"), generatedText);
                     }
                 }
             }

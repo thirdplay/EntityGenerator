@@ -80,6 +80,7 @@ namespace EntityGenerator.Views.Controls
                     if (item.IsChecked.HasValue && item.IsChecked.Value)
                     {
                         list.Add(item);
+                        list.AddRange(item.GetCheckedChild());
                     }
                 }
             }

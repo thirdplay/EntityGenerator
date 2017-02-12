@@ -116,7 +116,6 @@ namespace EntityGenerator.ViewModels
             {
                 if (_CheckedItems != value)
                 {
-                    Console.WriteLine("CheckedItems!!");
                     _CheckedItems = value;
                     RaisePropertyChanged();
                 }
@@ -207,13 +206,8 @@ namespace EntityGenerator.ViewModels
                 return;
             }
 
-            var builder = new OracleConnectionStringBuilder()
-            {
-                UserID = this.UserId,
-                Password = this.Password,
-                DataSource = this.DataSource
-            };
-            generator.Generate(builder);
+            // モデル機能の呼び出し
+            generator.Generate(message.Response, this.builder, this.CheckedItems);
         }
     }
 }

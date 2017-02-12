@@ -1,4 +1,6 @@
 ﻿using Livet;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EntityGenerator.Views.Controls
@@ -124,6 +126,35 @@ namespace EntityGenerator.Views.Controls
             child.Parent = this;
             child.PropertyChanged += (sender, e) => RaisePropertyChanged(nameof(this.Children));
             this.Children.Add(child);
+        }
+
+        /// <summary>
+        /// チェック状態の子要素を取得します。
+        /// </summary>
+        /// <returns>子要素のリスト</returns>
+        public List<CheckTreeSource> GetCheckedChild()
+        {
+            var result = new List<CheckTreeSource>();
+            if (this.Children == null) { return result; }
+
+            if (this.IsChecked.HasValue && !this.IsChecked.Value)
+            {
+                return result;
+            }
+            else if (this.IsChecked.HasValue && this.IsChecked.Value)
+            {
+                result.AddRange(this.Children);
+            }
+            foreach (var item in this.Children)
+            {
+                if (item.IsChecked.HasValue && item.IsChecked.Value)
+                {
+                    result.Add(item);
+                }
+                result.AddRange(item.GetCheckedChild());
+            }
+
+            return result;
         }
 
         /// <summary>

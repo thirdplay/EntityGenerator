@@ -2,17 +2,24 @@
 using EntityGenerator.Properties;
 using Livet;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using WpfUtility.Lifetime;
 
 namespace EntityGenerator
 {
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
-    sealed partial class Application
+    sealed partial class Application : IDisposableHolder
     {
+        /// <summary>
+        /// 基本CompositeDisposable。
+        /// </summary>
+        private readonly LivetCompositeDisposable compositeDisposable = new LivetCompositeDisposable();
+
         /// <summary>
         /// 静的コンストラクタ。
         /// </summary>
@@ -27,11 +34,11 @@ namespace EntityGenerator
         /// <param name="e">イベント引数</param>
         protected override void OnStartup(StartupEventArgs e)
         {
-//#if !DEBUG
-//            // 多重起動防止チェック
-//            var appInstance = new Util.Desktop.ApplicationInstance().AddTo(this);
-//            if (appInstance.IsFirst)
-//#endif
+#if !DEBUG
+            // 多重起動防止チェック
+            var appInstance = new WpfUtility.Desktop.ApplicationInstance().AddTo(this);
+            if (appInstance.IsFirst)
+#endif
             {
                 this.DispatcherUnhandledException += (sender, args) =>
                 {
@@ -48,12 +55,12 @@ namespace EntityGenerator
                 // 親メソッド呼び出し
                 base.OnStartup(e);
             }
-//#if !DEBUG
-//            else
-//            {
-//                this.Shutdown();
-//            }
-//#endif
+#if !DEBUG
+            else
+            {
+                this.Shutdown();
+            }
+#endif
         }
 
         /// <summary>
@@ -108,5 +115,17 @@ ERROR, date = {0}, sender = {1},
             // 終了
             Current.Shutdown();
         }
+
+        #region IDisposableHolder members
+        ICollection<IDisposable> IDisposableHolder.CompositeDisposable => this.compositeDisposable;
+
+        /// <summary>
+        /// このインスタンスによって使用されているリソースを全て破棄します。
+        /// </summary>
+        public void Dispose()
+        {
+            this.compositeDisposable.Dispose();
+        }
+        #endregion
     }
 }

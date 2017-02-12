@@ -1,15 +1,13 @@
 ﻿using EntityGenerator.Models;
 using EntityGenerator.Views.Controls;
 using Livet;
-using Livet.Commands;
-using Livet.EventListeners;
 using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using WpfUtility.Mvvm;
 
 namespace EntityGenerator.ViewModels
 {
@@ -160,16 +158,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Initialize()
         {
-            var listener = new PropertyChangedEventListener(this, (sender, e) =>
+            this.Subscribe(nameof(CheckedItems), ()=>
             {
-                if (e.PropertyName == nameof(this.CheckedItems))
-                {
-                    this.CanGenerate = this.DatabaseObjects
-                        .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
-                        .Any();
-                }
-            });
-            this.CompositeDisposable.Add(listener);
+                this.CanGenerate = this.DatabaseObjects
+                    .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
+                    .Any();
+            }).AddTo(this);
         }
 
         /// <summary>
@@ -192,7 +186,7 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Generate()
         {
-            // 暫定対応。あとで入力項目を増やして対応するかも
+            // TODO: 暫定対応。あとで入力項目を増やして対応する予定
             var message = new FolderSelectionMessage("FolderDialog.Open")
             {
                 Title = "出力フォルダを指定",

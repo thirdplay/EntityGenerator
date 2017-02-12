@@ -103,6 +103,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfUtility, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfUtility.0.1.0\lib\net46\WpfUtility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Application.xaml">
@@ -149,7 +153,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DataObjectViewModel.cs" />
     <Compile Include="Views\Controls\CheckTreeSource.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Controls\CheckTreeView.cs" />

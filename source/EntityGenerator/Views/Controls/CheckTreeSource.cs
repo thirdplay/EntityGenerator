@@ -122,6 +122,7 @@ namespace EntityGenerator.Views.Controls
         public void Add(CheckTreeSource child)
         {
             child.Parent = this;
+            child.PropertyChanged += (sender, e) => RaisePropertyChanged(nameof(this.Children));
             this.Children.Add(child);
         }
 
@@ -130,50 +131,52 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public void UpdateParentStatus()
         {
-            if (null != this.Parent)
+            if (this.Parent == null)
             {
-                int isCheckedNull = 0;
-                int isCheckedOn = 0;
-                int isCheckedOff = 0;
-                if (null != this.Parent.Children)
+                return;
+            }
+
+            int isCheckedNull = 0;
+            int isCheckedOn = 0;
+            int isCheckedOff = 0;
+            if (this.Parent.Children != null)
+            {
+                foreach (var item in this.Parent.Children)
                 {
-                    foreach (var item in this.Parent.Children)
+                    if (!item.IsChecked.HasValue)
                     {
-                        if (!item.IsChecked.HasValue)
-                        {
-                            isCheckedNull += 1;
-                        }
-                        else if (item.IsChecked.Value)
-                        {
-                            isCheckedOn += 1;
-                        }
-                        else
-                        {
-                            isCheckedOff += 1;
-                        }
+                        isCheckedNull += 1;
                     }
-                }
-                if (0 < isCheckedNull || 0 < isCheckedOn || 0 < isCheckedOff)
-                {
-                    if (0 < isCheckedNull)
+                    else if (item.IsChecked.Value)
                     {
-                        this.Parent.IsChecked = null;
-                    }
-                    else if ((0 < isCheckedOn) && (0 < isCheckedOff))
-                    {
-                        this.Parent.IsChecked = null;
-                    }
-                    else if (0 < isCheckedOn)
-                    {
-                        this.Parent.IsChecked = true;
+                        isCheckedOn += 1;
                     }
                     else
                     {
-                        this.Parent.IsChecked = false;
+                        isCheckedOff += 1;
                     }
                 }
-                this.Parent.UpdateParentStatus();
             }
+            if (isCheckedNull > 0 || isCheckedOn  > 0 || isCheckedOff > 0)
+            {
+                if (isCheckedNull > 0)
+                {
+                    this.Parent.IsChecked = null;
+                }
+                else if ((isCheckedOn > 0) && (isCheckedOff > 0))
+                {
+                    this.Parent.IsChecked = null;
+                }
+                else if (isCheckedOn > 0)
+                {
+                    this.Parent.IsChecked = true;
+                }
+                else
+                {
+                    this.Parent.IsChecked = false;
+                }
+            }
+            this.Parent.UpdateParentStatus();
         }
 
         /// <summary>
@@ -181,26 +184,22 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public void UpdateChildStatus()
         {
-            if (null != this.IsChecked)
+            if (this.IsChecked == null) { return; }
+            if (this.Children == null) { return; }
+            foreach (var item in this.Children)
             {
-                if (null != this.Children)
-                {
-                    foreach (var item in this.Children)
-                    {
-                        item.IsChecked = this.IsChecked;
-                        item.UpdateChildStatus();
-                    }
-                }
+                item.IsChecked = this.IsChecked;
+                item.UpdateChildStatus();
             }
         }
 
-        ///// <summary>
-        ///// クリック処理。
-        ///// </summary>
-        //public void OnClick()
-        //{
-        //    this.UpdateChildStatus();
-        //    this.UpdateParentStatus();
-        //}
+        /// <summary>
+        /// クリック処理。
+        /// </summary>
+        public void OnClick()
+        {
+            this.UpdateChildStatus();
+            this.UpdateParentStatus();
+        }
     }
 }

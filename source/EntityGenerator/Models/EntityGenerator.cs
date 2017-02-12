@@ -3,6 +3,7 @@ using EntityGenerator.Properties;
 using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
 using EntityGenerator.ViewModels;
+using EntityGenerator.Views.Controls;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace EntityGenerator.Models
         /// </summary>
         /// <param name="connectionString">接続文字列</param>
         /// <returns>データベースオブジェクトのコレクション</returns>
-        public ObservableCollection<DataObjectViewModel> SearchDataObjects(OracleConnectionStringBuilder builder)
+        public ObservableCollection<CheckTreeSource> SearchDataObjects(OracleConnectionStringBuilder builder)
         {
             try
             {
@@ -32,15 +33,15 @@ namespace EntityGenerator.Models
                     var dataObjects = repository.FindDataObjects();
 
                     // ツリービューソースに変換する
-                    var results = new ObservableCollection<DataObjectViewModel>();
+                    var results = new ObservableCollection<CheckTreeSource>();
                     var owners = dataObjects.Select(x => x.Owner).Distinct();
                     foreach (string owner in owners)
                     {
-                        var ownerNode = new DataObjectViewModel(owner, true);
+                        var ownerNode = new CheckTreeSource(owner, true);
                         var childrens = dataObjects.Where(x => x.Owner == owner);
                         foreach (var children in childrens)
                         {
-                            ownerNode.Add(new DataObjectViewModel(children.Name, true));
+                            ownerNode.Add(new CheckTreeSource(children.Name, true));
                         }
                         results.Add(ownerNode);
                     }
@@ -51,7 +52,7 @@ namespace EntityGenerator.Models
             catch (Exception ex)
             {
                 Application.ShowException(ex);
-                return new ObservableCollection<DataObjectViewModel>();
+                return new ObservableCollection<CheckTreeSource>();
             }
         }
 

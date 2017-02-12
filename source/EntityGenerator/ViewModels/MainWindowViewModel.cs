@@ -1,8 +1,12 @@
 ﻿using EntityGenerator.Models;
+using EntityGenerator.Views.Controls;
 using Livet;
 using Livet.Commands;
+using Livet.EventListeners;
 using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -33,7 +37,7 @@ namespace EntityGenerator.ViewModels
         {
             get { return _UserId; }
             set
-            { 
+            {
                 if (_UserId != value)
                 {
                     _UserId = value;
@@ -52,7 +56,7 @@ namespace EntityGenerator.ViewModels
         {
             get { return _Password; }
             set
-            { 
+            {
                 if (_Password != value)
                 {
                     _Password = value;
@@ -71,7 +75,7 @@ namespace EntityGenerator.ViewModels
         {
             get { return _DataSource; }
             set
-            { 
+            {
                 if (_DataSource != value)
                 {
                     _DataSource = value;
@@ -82,18 +86,57 @@ namespace EntityGenerator.ViewModels
         #endregion
 
         #region DatabaseObjects 変更通知プロパティ
-        private ObservableCollection<DataObjectViewModel> _DatabaseObjects;
+        private ObservableCollection<CheckTreeSource> _DatabaseObjects;
         /// <summary>
         /// データベースオブジェクト一覧を取得または設定します。
         /// </summary>
-        public ObservableCollection<DataObjectViewModel> DatabaseObjects
+        public ObservableCollection<CheckTreeSource> DatabaseObjects
         {
             get { return _DatabaseObjects; }
             set
-            { 
+            {
                 if (_DatabaseObjects != value)
                 {
                     _DatabaseObjects = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+        #region CheckedItems 変更通知プロパティ
+        private List<CheckTreeSource> _CheckedItems;
+        /// <summary>
+        /// チェック中のコレクションを取得または設定します。
+        /// </summary>
+        public List<CheckTreeSource> CheckedItems
+        {
+            get { return _CheckedItems; }
+            set
+            {
+                if (_CheckedItems != value)
+                {
+                    Console.WriteLine("CheckedItems!!");
+                    _CheckedItems = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+        #region CanGenerate 変更通知プロパティ
+        private bool _CanGenerate;
+        /// <summary>
+        /// 生成できるかどうかを示す値を取得します。
+        /// </summary>
+        public bool CanGenerate
+        {
+            get { return _CanGenerate; }
+            set
+            {
+                if (_CanGenerate != value)
+                {
+                    _CanGenerate = value;
                     RaisePropertyChanged();
                 }
             }
@@ -118,6 +161,16 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public void Initialize()
         {
+            var listener = new PropertyChangedEventListener(this, (sender, e) =>
+            {
+                if (e.PropertyName == nameof(this.CheckedItems))
+                {
+                    this.CanGenerate = this.DatabaseObjects
+                        .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
+                        .Any();
+                }
+            });
+            this.CompositeDisposable.Add(listener);
         }
 
         /// <summary>
@@ -133,37 +186,6 @@ namespace EntityGenerator.ViewModels
             };
 
             this.DatabaseObjects = generator.SearchDataObjects(this.builder);
-        }
-
-        #region GenerateCommand
-        private ViewModelCommand _GenerateCommand;
-        /// <summary>
-        /// 生成コマンドを取得します。
-        /// </summary>
-        public ViewModelCommand GenerateCommand
-        {
-            get
-            {
-                if (this._GenerateCommand == null)
-                {
-                    this._GenerateCommand = new ViewModelCommand(this.Generate, this.CanGenerate);
-                }
-                return this._GenerateCommand;
-            }
-        }
-
-        /// <summary>
-        /// 生成できるかどうかを示す値を取得します。
-        /// </summary>
-        public bool CanGenerate()
-        {
-            if (this.DatabaseObjects != null)
-            {
-                return this.DatabaseObjects
-                    .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
-                    .Any();
-            }
-            return false;
         }
 
         /// <summary>
@@ -193,6 +215,5 @@ namespace EntityGenerator.ViewModels
             };
             generator.Generate(builder);
         }
-        #endregion
     }
 }

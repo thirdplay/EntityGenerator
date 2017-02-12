@@ -127,7 +127,8 @@
                 </UniformGrid>
             </Grid>
             <controls:CheckTreeView Grid.Row="2"
-                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}" />
+                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
+                                    CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}"/>
             <!--<TreeView Grid.Row="2"
                       Background="{DynamicResource ThemeBrushKey}"
                       BorderBrush="{DynamicResource ActiveBorderBrushKey}"
@@ -164,14 +165,13 @@
                         Margin="4,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
-                        Command="{Binding GenerateCommand}"
-                        IsEnabled="{Binding GenerateCommand.CanExecute, UpdateSourceTrigger=LostFocus}">
-                    <!--<i:Interaction.Triggers>
+                        IsEnabled="{Binding CanGenerate}">
+                    <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                      MethodName="Generate" />
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>-->
+                    </i:Interaction.Triggers>
                 </Button>
             </StackPanel>
         </Grid>

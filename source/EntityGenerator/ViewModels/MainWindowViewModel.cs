@@ -160,9 +160,7 @@ namespace EntityGenerator.ViewModels
         {
             this.Subscribe(nameof(CheckedItems), ()=>
             {
-                this.CanGenerate = this.DatabaseObjects
-                    .Where(x => !x.IsChecked.HasValue || x.IsChecked.Value)
-                    .Any();
+                this.CanGenerate = this.CheckedItems?.Count > 0;
             }).AddTo(this);
         }
 

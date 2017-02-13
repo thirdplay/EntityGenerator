@@ -145,7 +145,7 @@
     <Compile Include="Entities\TableDefinition.cs" />
     <Compile Include="Models\PropertyDefinition.cs" />
     <Compile Include="Models\StringExtensions.cs" />
-    <Compile Include="Models\TypeConverter.cs" />
+    <Compile Include="Models\OracleTypeToCsTypeConverter.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\DatabaseObjectRepository.cs" />
     <Compile Include="Templetes\EntityTemplate.cs">
@@ -180,6 +180,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -190,7 +191,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\app.ico" />
     <Content Include="Templetes\EntityTemplate.tt">

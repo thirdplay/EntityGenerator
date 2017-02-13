@@ -25,7 +25,7 @@ namespace EntityGenerator
         /// </summary>
         static Application()
         {
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
+            //AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
         }
 
         /// <summary>

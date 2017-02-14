@@ -165,8 +165,9 @@ from ALL_TAB_COLUMNS TC
     )
 where
     TC.OWNER = :OWNER
+    and TC.TABLE_NAME = :TABLE_NAME
 order by
-    TC.TABLE_NAME, TC.COLUMN_ID</value>
+    TC.COLUMN_ID</value>
     <comment>テーブル定義の取得SQL</comment>
   </data>
 </root>

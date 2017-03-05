@@ -6,7 +6,6 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using WpfUtility.Mvvm;
 
 namespace EntityGenerator.ViewModels
@@ -140,6 +139,22 @@ namespace EntityGenerator.ViewModels
         }
         #endregion
 
+        #region IsBusy 変更通知プロパティ
+        private bool _IsBusy;
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+            set
+            {
+                if (_IsBusy != value)
+                {
+                    _IsBusy = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
         /// <summary>
         /// コンストラクタ。
         /// </summary>
@@ -167,7 +182,7 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// データベースオブジェクトを検索します。
         /// </summary>
-        public void Search()
+        public async void Search()
         {
             this.builder = new OracleConnectionStringBuilder()
             {
@@ -176,7 +191,9 @@ namespace EntityGenerator.ViewModels
                 DataSource = this.DataSource
             };
 
-            this.DatabaseObjects = generator.SearchDataObjects(this.builder);
+            this.IsBusy = true;
+            this.DatabaseObjects = await generator.SearchDataObjects(this.builder).ConfigureAwait(false);
+            this.IsBusy = false;
         }
 
         /// <summary>

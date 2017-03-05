@@ -6,18 +6,19 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
+                   xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
                    xmlns:viewModels="clr-namespace:EntityGenerator.ViewModels"
                    xmlns:controls="clr-namespace:EntityGenerator.Views.Controls"
                    mc:Ignorable="d"
-                   WindowStartupLocation="CenterScreen"
                    Icon="/EntityGenerator;component/assets/app.ico"
+                   d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
                    Background="{DynamicResource ThemeBrushKey}"
 	               Foreground="{DynamicResource ActiveForegroundBrushKey}"
                    Height="480"
                    Width="640"
                    MinHeight="165"
                    MinWidth="320"
-                   d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+                   IsRestoringWindowPlacement="True">
     <metro:MetroWindow.DataContext>
         <viewModels:MainWindowViewModel />
     </metro:MetroWindow.DataContext>
@@ -32,11 +33,11 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
-            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize"/>
+            <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                     MethodName="Initialize"/>
         </i:EventTrigger>
-
         <i:EventTrigger EventName="Closed">
-            <l:DataContextDisposeAction/>
+            <l:DataContextDisposeAction />
         </i:EventTrigger>
 
         <l:InteractionMessageTrigger Messenger="{Binding Messenger}"
@@ -128,32 +129,7 @@
             </Grid>
             <controls:CheckTreeView Grid.Row="2"
                                     ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
-                                    CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}"/>
-            <!--<TreeView Grid.Row="2"
-                      Background="{DynamicResource ThemeBrushKey}"
-                      BorderBrush="{DynamicResource ActiveBorderBrushKey}"
-                      ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}">
-                <TreeView.Resources>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="IsExpanded"
-                                Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    </Style>
-                </TreeView.Resources>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type viewModels:DataObjectViewModel}"
-                                              ItemsSource="{Binding Children}">
-                        <CheckBox Margin="1" IsChecked="{Binding IsChecked}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <l:LivetCallMethodAction MethodTarget="{Binding}"
-                                                             MethodName="OnClick" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <TextBlock Text="{Binding Header}"/>
-                        </CheckBox>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>-->
+                                    CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}" />
 
             <StackPanel Grid.Row="3"
                         DockPanel.Dock="Bottom"
@@ -175,5 +151,16 @@
                 </Button>
             </StackPanel>
         </Grid>
+        <toolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}"
+                               Background="{DynamicResource ThemeBrushKey}"
+                               Foreground="{DynamicResource ActiveForegroundBrushKey}"
+                               Grid.RowSpan="2">
+            <toolkit:BusyIndicator.OverlayStyle>
+                <Style TargetType="Rectangle">
+                    <Setter Property="Fill"
+                            Value="#80000000" />
+                </Style>
+            </toolkit:BusyIndicator.OverlayStyle>
+        </toolkit:BusyIndicator>
     </Grid>
 </metro:MetroWindow>

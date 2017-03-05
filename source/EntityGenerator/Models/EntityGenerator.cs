@@ -1,4 +1,5 @@
 ﻿using EntityGenerator.Entities;
+using EntityGenerator.Extensions;
 using EntityGenerator.Repositories;
 using EntityGenerator.Templetes;
 using EntityGenerator.Views.Controls;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EntityGenerator.Models
 {
@@ -22,38 +24,43 @@ namespace EntityGenerator.Models
         /// </summary>
         /// <param name="connectionString">接続文字列</param>
         /// <returns>データベースオブジェクトのコレクション</returns>
-        public ObservableCollection<CheckTreeSource> SearchDataObjects(OracleConnectionStringBuilder builder)
+        public Task<ObservableCollection<CheckTreeSource>> SearchDataObjects(OracleConnectionStringBuilder builder)
         {
-            try
+            return Task.Run(() =>
             {
-                using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
+                try
                 {
-                    // データオブジェクトの検索
-                    var repository = new DatabaseObjectRepository(conn);
-                    var dataObjects = repository.FindDataObjects();
-
-                    // ツリービューソースに変換する
-                    var results = new ObservableCollection<CheckTreeSource>();
-                    var owners = dataObjects.Select(x => x.Owner).Distinct();
-                    foreach (string owner in owners)
+                    using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
                     {
-                        var ownerNode = new CheckTreeSource(owner, true);
-                        var childrens = dataObjects.Where(x => x.Owner == owner);
-                        foreach (var children in childrens)
-                        {
-                            ownerNode.Add(new CheckTreeSource(children.Name, true));
-                        }
-                        results.Add(ownerNode);
-                    }
+                        // データオブジェクトの検索
+                        var repository = new DatabaseObjectRepository(conn);
+                        var dataObjects = repository.FindDataObjects();
 
-                    return results;
+                        // ツリービューソースに変換する
+                        var results = new ObservableCollection<CheckTreeSource>();
+                        var owners = dataObjects.Select(x => x.Owner).Distinct();
+                        foreach (string owner in owners)
+                        {
+                            var ownerNode = new CheckTreeSource(owner, true);
+                            var childrens = dataObjects.Where(x => x.Owner == owner);
+                            foreach (var children in childrens)
+                            {
+                                ownerNode.Add(new CheckTreeSource(children.Name, true));
+                            }
+                            results.Add(ownerNode);
+                        }
+
+                        //System.Threading.Thread.Sleep(5000);
+
+                        return results;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Application.ShowException(ex);
-                return new ObservableCollection<CheckTreeSource>();
-            }
+                catch (Exception ex)
+                {
+                    Application.ShowException(ex);
+                    return new ObservableCollection<CheckTreeSource>();
+                }
+            });
         }
 
         /// <summary>

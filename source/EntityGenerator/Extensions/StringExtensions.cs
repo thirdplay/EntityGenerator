@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EntityGenerator.Models
+namespace EntityGenerator.Extensions
 {
     /// <summary>
     /// 文字列クラスの拡張機能を提供します。

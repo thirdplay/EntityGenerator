@@ -30,7 +30,7 @@ namespace EntityGenerator.Models
             {
                 try
                 {
-                    using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
+                    using (var conn = new OracleConnection(builder.ToString()))
                     {
                         // データオブジェクトの検索
                         var repository = new DatabaseObjectRepository(conn);
@@ -74,7 +74,7 @@ namespace EntityGenerator.Models
             try
             {
                 var tableNames = checkedItems.Where(x => x.Parent != null).Select(x => x.Header);
-                using (var conn = OracleConnectionFactory.CreateConnection(builder.ToString()))
+                using (var conn = new OracleConnection(builder.ToString()))
                 {
                     var repository = new DatabaseObjectRepository(conn);
 
@@ -93,7 +93,7 @@ namespace EntityGenerator.Models
 
                         // エンティティモデルの出力
                         Debug.WriteLine(generatedText);
-                        File.WriteAllText(Path.Combine(outputDir, tableName + ".cs"), generatedText);
+                        File.WriteAllText(Path.Combine(outputDir, tableName.SnakeToPascal() + ".cs"), generatedText);
                     }
                 }
             }

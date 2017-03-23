@@ -32,12 +32,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public string UserId
         {
-            get { return _UserId; }
+            get { return this._UserId; }
             set
             {
-                if (_UserId != value)
+                if (this._UserId != value)
                 {
-                    _UserId = value;
+                    this._UserId = value;
                     RaisePropertyChanged();
                 }
             }
@@ -51,12 +51,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public string Password
         {
-            get { return _Password; }
+            get { return this._Password; }
             set
             {
-                if (_Password != value)
+                if (this._Password != value)
                 {
-                    _Password = value;
+                    this._Password = value;
                     RaisePropertyChanged();
                 }
             }
@@ -70,12 +70,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public string DataSource
         {
-            get { return _DataSource; }
+            get { return this._DataSource; }
             set
             {
-                if (_DataSource != value)
+                if (this._DataSource != value)
                 {
-                    _DataSource = value;
+                    this._DataSource = value;
                     RaisePropertyChanged();
                 }
             }
@@ -89,12 +89,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public ObservableCollection<CheckTreeSource> DatabaseObjects
         {
-            get { return _DatabaseObjects; }
+            get { return this._DatabaseObjects; }
             set
             {
-                if (_DatabaseObjects != value)
+                if (this._DatabaseObjects != value)
                 {
-                    _DatabaseObjects = value;
+                    this._DatabaseObjects = value;
                     RaisePropertyChanged();
                 }
             }
@@ -108,12 +108,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public List<CheckTreeSource> CheckedItems
         {
-            get { return _CheckedItems; }
+            get { return this._CheckedItems; }
             set
             {
-                if (_CheckedItems != value)
+                if (this._CheckedItems != value)
                 {
-                    _CheckedItems = value;
+                    this._CheckedItems = value;
                     RaisePropertyChanged();
                 }
             }
@@ -127,12 +127,12 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public bool CanGenerate
         {
-            get { return _CanGenerate; }
+            get { return this._CanGenerate; }
             set
             {
-                if (_CanGenerate != value)
+                if (this._CanGenerate != value)
                 {
-                    _CanGenerate = value;
+                    this._CanGenerate = value;
                     RaisePropertyChanged();
                 }
             }
@@ -143,12 +143,12 @@ namespace EntityGenerator.ViewModels
         private bool _IsBusy;
         public bool IsBusy
         {
-            get { return _IsBusy; }
+            get { return this._IsBusy; }
             set
             {
-                if (_IsBusy != value)
+                if (this._IsBusy != value)
                 {
-                    _IsBusy = value;
+                    this._IsBusy = value;
                     RaisePropertyChanged();
                 }
             }
@@ -192,7 +192,7 @@ namespace EntityGenerator.ViewModels
             };
 
             this.IsBusy = true;
-            this.DatabaseObjects = await generator.SearchDataObjects(this.builder).ConfigureAwait(false);
+            this.DatabaseObjects = await this.generator.SearchDataObjects(this.builder).ConfigureAwait(false);
             this.IsBusy = false;
         }
 
@@ -216,7 +216,7 @@ namespace EntityGenerator.ViewModels
             }
 
             // モデル機能の呼び出し
-            generator.Generate(message.Response, this.builder, this.CheckedItems);
+            this.generator.Generate(message.Response, this.builder, this.CheckedItems);
         }
     }
 }

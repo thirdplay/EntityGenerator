@@ -68,39 +68,44 @@ namespace EntityGenerator.Models
         /// </summary>
         /// <param name="outputDir">出力先ディレクトリ</param>
         /// <param name="builder">接続文字列</param>
+        /// <param name="namespace">名前空間</param>
         /// <param name="checkedItems">選択中の項目</param>
-        public void Generate(string outputDir, OracleConnectionStringBuilder builder, List<CheckTreeSource> checkedItems)
+        /// <returns>タスク</returns>
+        public Task Generate(string outputDir, OracleConnectionStringBuilder builder, string @namespace, List<CheckTreeSource> checkedItems)
         {
-            try
+            return Task.Run(() =>
             {
-                var tableNames = checkedItems.Where(x => x.Parent != null).Select(x => x.Header);
-                using (var conn = new OracleConnection(builder.ToString()))
+                try
                 {
-                    var repository = new DatabaseObjectRepository(conn);
-
-                    foreach (var tableName in tableNames)
+                    var tableNames = checkedItems.Where(x => x.Parent != null).Select(x => x.Header);
+                    using (var conn = new OracleConnection(builder.ToString()))
                     {
-                        // クラス定義情報の生成
-                        var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
-                        var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
+                        var repository = new DatabaseObjectRepository(conn);
 
-                        // テンプレートを評価する
-                        var tmpl = new EntityTemplate()
+                        foreach (var tableName in tableNames)
                         {
-                            ClassDefinition = classDefinition
-                        };
-                        var generatedText = tmpl.TransformText();
+                            // クラス定義情報の生成
+                            var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
+                            var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
 
-                        // エンティティモデルの出力
-                        Debug.WriteLine(generatedText);
-                        File.WriteAllText(Path.Combine(outputDir, tableName.SnakeToPascal() + ".cs"), generatedText);
+                            // テンプレートを評価する
+                            var tmpl = new EntityTemplate()
+                            {
+                                ClassDefinition = classDefinition
+                            };
+                            var generatedText = tmpl.TransformText();
+
+                            // エンティティモデルの出力
+                            Debug.WriteLine(generatedText);
+                            File.WriteAllText(Path.Combine(outputDir, tableName.SnakeToPascal() + ".cs"), generatedText);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Application.ShowException(ex);
-            }
+                catch (Exception ex)
+                {
+                    Application.ShowException(ex);
+                }
+            });
         }
 
         /// <summary>

@@ -82,6 +82,44 @@ namespace EntityGenerator.ViewModels
         }
         #endregion
 
+        #region Namespace 変更通知プロパティ
+        private string _Namespace;
+        /// <summary>
+        /// 名前空間を取得または設定します。
+        /// </summary>
+        public string Namespace
+        {
+            get { return this._Namespace; }
+            set
+            {
+                if (this._Namespace != value)
+                {
+                    this._Namespace = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+        #region OutputDestnation 変更通知プロパティ
+        private string _OutputDestnation;
+        /// <summary>
+        /// 出力先を取得または設定します。
+        /// </summary>
+        public string OutputDestnation
+        {
+            get { return this._OutputDestnation; }
+            set
+            {
+                if (this._OutputDestnation != value)
+                {
+                    this._OutputDestnation = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
         #region DatabaseObjects 変更通知プロパティ
         private ObservableCollection<CheckTreeSource> _DatabaseObjects;
         /// <summary>
@@ -165,6 +203,7 @@ namespace EntityGenerator.ViewModels
             this.DataSource = "XE";
             this.UserId = "DEMO";
             this.Password = "DEMO";
+            this.Namespace = "Prototype.Entities";
 #endif
         }
 
@@ -199,24 +238,28 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// エンティティを生成します。
         /// </summary>
-        public void Generate()
+        public async void Generate()
         {
-            // TODO: 暫定対応。あとで入力項目を増やして対応する予定
-            var message = new FolderSelectionMessage("FolderDialog.Open")
-            {
-                Title = "出力フォルダを指定",
-                DialogPreference = Helper.IsWindows8OrGreater
-                    ? FolderSelectionDialogPreference.CommonItemDialog
-                    : FolderSelectionDialogPreference.FolderBrowser,
-            };
-            this.Messenger.Raise(message);
-            if (!Directory.Exists(message.Response))
-            {
-                return;
-            }
+            //if (string.IsNullOrEmpty(this.OutputDestnation))
+            //{
+            //    var message = new FolderSelectionMessage("FolderDialog.Open")
+            //    {
+            //        Title = "出力フォルダを指定",
+            //        DialogPreference = Helper.IsWindows8OrGreater
+            //            ? FolderSelectionDialogPreference.CommonItemDialog
+            //            : FolderSelectionDialogPreference.FolderBrowser,
+            //    };
+            //    this.Messenger.Raise(message);
+            //    if (!Directory.Exists(message.Response))
+            //    {
+            //        return;
+            //    }
+            //    this.OutputDestnation = message.Response;
+            //}
 
-            // モデル機能の呼び出し
-            this.generator.Generate(message.Response, this.builder, this.CheckedItems);
+            this.IsBusy = true;
+            await this.generator.Generate(this.OutputDestnation, this.builder, this.Namespace, this.CheckedItems);
+            this.IsBusy = false;
         }
     }
 }

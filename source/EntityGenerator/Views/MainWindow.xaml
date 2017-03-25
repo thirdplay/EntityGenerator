@@ -76,6 +76,9 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -131,24 +134,58 @@
                                     ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
                                     CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}" />
 
-            <StackPanel Grid.Row="3"
-                        DockPanel.Dock="Bottom"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="0,8,0,8">
-                <Button Content="生成"
+            <TextBlock Grid.Row="3"
+                       Text="生成情報"
+                       Style="{DynamicResource HeaderTextStyleKey}" Margin="0,10" />
+            <Grid Grid.Row="4"
+                  Style="{DynamicResource ContentPanelStyleKey}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Column="0" Columns="1">
+                    <TextBlock Text="名前空間: " />
+                    <TextBlock Text="出力先: " />
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="1" Columns="1">
+                    <metro:PromptTextBox Prompt="名前空間"
+                                         Margin="0,2"
+                                         Text="{Binding Namespace, Mode=TwoWay}" />
+                    <metro:PromptTextBox Prompt="出力先"
+                                         Margin="0,2"
+                                         Text="{Binding OutputDestnation, Mode=TwoWay}" />
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="2" Columns="1">
+                    <Button Content="生成"
                         MinWidth="90"
                         Margin="4,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         IsEnabled="{Binding CanGenerate}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <l:LivetCallMethodAction MethodTarget="{Binding}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                      MethodName="Generate" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </UniformGrid>
+            </Grid>
+
+            <StackPanel Grid.Row="5"
+                        DockPanel.Dock="Bottom"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,8,0,8">
             </StackPanel>
         </Grid>
         <toolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}"

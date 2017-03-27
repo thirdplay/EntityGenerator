@@ -4,4 +4,14 @@
         <ResourceDictionary Source="/EntityGenerator;component/Styles/Controls.CheckTreeView.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="SeparatorRectangleStyleKey"
+		   TargetType="{x:Type Rectangle}">
+        <Setter Property="Fill"
+				Value="{DynamicResource InactiveForegroundBrushKey}" />
+        <Setter Property="Opacity"
+				Value="0.6" />
+        <Setter Property="Margin"
+                Value="0,0,0,10" />
+    </Style>
+
 </ResourceDictionary>

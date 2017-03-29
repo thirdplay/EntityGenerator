@@ -23,14 +23,6 @@
         <viewModels:MainWindowViewModel />
     </metro:MetroWindow.DataContext>
 
-    <metro:MetroWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </metro:MetroWindow.Resources>
-
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
             <l:LivetCallMethodAction MethodTarget="{Binding}"
@@ -48,8 +40,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- #region Caption area -->
@@ -69,125 +62,137 @@
         </DockPanel>
         <!-- #endregion  -->
 
-        <Grid Grid.Row="1"
-              Margin="16,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="0">
+        <Expander Grid.Row="1"
+                  Margin="8"
+                  IsExpanded="True">
+            <Expander.Header>
                 <TextBlock Text="接続情報"
-                           Style="{DynamicResource HeaderTextStyleKey}" />
-                <Grid Style="{DynamicResource ContentPanelStyleKey}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                           Margin="0"
+                           Style="{DynamicResource HeaderTextStyleKey}"
+                           Foreground="{DynamicResource ActiveForegroundBrushKey}" />
+            </Expander.Header>
 
-                    <UniformGrid Grid.Column="0" Columns="1">
-                        <TextBlock Text="接続識別子: " />
-                        <TextBlock Text="ユーザID: " />
-                        <TextBlock Text="パスワード: "/>
-                    </UniformGrid>
+            <StackPanel Grid.IsSharedSizeScope="True">
+                <Border BorderThickness=".99"
+							BorderBrush="{DynamicResource BorderBrushKey}"
+							Padding="5"
+							Margin="0,8,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <UniformGrid Grid.Column="1" Columns="1">
-                        <metro:PromptTextBox Prompt="接続識別子"
+                        <UniformGrid Grid.Column="0" Columns="1">
+                            <TextBlock Text="接続識別子: " />
+                            <TextBlock Text="ユーザID: " />
+                            <TextBlock Text="パスワード: "/>
+                        </UniformGrid>
+
+                        <UniformGrid Grid.Column="1" Columns="1">
+                            <metro:PromptTextBox Prompt="接続識別子"
                                          Margin="0,2"
                                          Text="{Binding DataSource, Mode=TwoWay}" />
-                        <metro:PromptTextBox Prompt="ユーザID"
+                            <metro:PromptTextBox Prompt="ユーザID"
                                          Margin="0,2"
                                          Text="{Binding UserId, Mode=TwoWay}" />
-                        <metro:PromptTextBox Prompt="パスワード"
+                            <metro:PromptTextBox Prompt="パスワード"
                                          Margin="0,2"
                                          Text="{Binding Password, Mode=TwoWay}" />
-                    </UniformGrid>
+                        </UniformGrid>
 
-                    <UniformGrid Grid.Column="2" Columns="1">
-                        <Button Content="検索"
+                        <UniformGrid Grid.Column="2" Columns="1">
+                            <Button Content="検索"
                             MinWidth="90"
                             Margin="4,2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                          MethodName="Search" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </UniformGrid>
-                </Grid>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </UniformGrid>
+                    </Grid>
+                </Border>
             </StackPanel>
-            <controls:CheckTreeView Grid.Row="1"
-                                    ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
-                                    CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}" />
-            <StackPanel Grid.Row="2">
-                <Rectangle Height="1" Style="{DynamicResource SeparatorRectangleStyleKey}" />
+        </Expander>
+        <Expander Grid.Row="2"
+                  Margin="8,0"
+                  IsExpanded="False">
+            <Expander.Header>
                 <TextBlock Text="生成情報"
-                           Style="{DynamicResource HeaderTextStyleKey}" Margin="0,10" />
-                <Grid Style="{DynamicResource ContentPanelStyleKey}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                           Margin="0"
+                           Style="{DynamicResource HeaderTextStyleKey}"
+                           Foreground="{DynamicResource ActiveForegroundBrushKey}" />
+            </Expander.Header>
 
-                    <UniformGrid Grid.Column="0" Columns="1">
-                        <TextBlock Text="名前空間: " />
-                        <TextBlock Text="出力先: " />
-                    </UniformGrid>
+            <StackPanel Grid.IsSharedSizeScope="True">
+                <Border BorderThickness=".99"
+							BorderBrush="{DynamicResource BorderBrushKey}"
+							Padding="5"
+							Margin="0,8,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <UniformGrid Grid.Column="1" Columns="1">
-                        <metro:PromptTextBox Prompt="名前空間"
+                        <UniformGrid Grid.Column="0" Columns="1">
+                            <TextBlock Text="名前空間: " />
+                            <TextBlock Text="出力先: " />
+                        </UniformGrid>
+
+                        <UniformGrid Grid.Column="1" Columns="1">
+                            <metro:PromptTextBox Prompt="名前空間"
                                          Margin="0,2"
                                          Text="{Binding Namespace, Mode=TwoWay}" />
-                        <metro:PromptTextBox Prompt="出力先"
+                            <metro:PromptTextBox Prompt="出力先"
                                          Margin="0,2"
                                          Text="{Binding OutputDestnation, Mode=TwoWay}" />
-                    </UniformGrid>
+                        </UniformGrid>
 
-                    <UniformGrid Grid.Column="2" Columns="1">
-                        <Button Content="生成"
+                        <UniformGrid Grid.Column="2" Columns="1">
+                            <Button Content="生成"
                         MinWidth="90"
                         Margin="4,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         IsEnabled="{Binding CanGenerate}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                      MethodName="Generate" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </UniformGrid>
-                </Grid>
-
-                <StackPanel Grid.Row="6"
-                        DockPanel.Dock="Bottom"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="0,8,0,8">
-                </StackPanel>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </UniformGrid>
+                    </Grid>
+                </Border>
             </StackPanel>
-        </Grid>
+        </Expander>
+        <controls:CheckTreeView Grid.Row="3"
+                                Margin="8"
+                                ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
+                                CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}" />
         <toolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}"
                                Background="{DynamicResource ThemeBrushKey}"
                                Foreground="{DynamicResource ActiveForegroundBrushKey}"
-                               Grid.RowSpan="2">
+                               Grid.RowSpan="4">
             <toolkit:BusyIndicator.OverlayStyle>
                 <Style TargetType="Rectangle">
                     <Setter Property="Fill"

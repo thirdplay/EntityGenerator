@@ -216,7 +216,7 @@
                                                          MethodName="OnClick" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <TextBlock Text="{Binding Header}"/>
+                        <TextBlock Text="{Binding Header}" FontFamily="{DynamicResource DefaultFontFamilyKey}" />
                     </CheckBox>
                 </HierarchicalDataTemplate>
             </Setter.Value>

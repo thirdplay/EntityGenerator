@@ -5,6 +5,7 @@ using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using WpfUtility.Mvvm;
 
@@ -13,7 +14,7 @@ namespace EntityGenerator.ViewModels
     /// <summary>
     /// メインウィンドウのViewModel。
     /// </summary>
-    public class MainWindowViewModel : ViewModel
+    public class MainWindowViewModel : ValidatableViewModel
     {
         /// <summary>
         /// エンティティ生成クラス。
@@ -24,6 +25,26 @@ namespace EntityGenerator.ViewModels
         /// 接続文字列。
         /// </summary>
         private OracleConnectionStringBuilder builder;
+
+        #region DataSource 変更通知プロパティ
+        private string _DataSource;
+        /// <summary>
+        /// データソースを取得または設定します。
+        /// </summary>
+        [Required]
+        public string DataSource
+        {
+            get { return this._DataSource; }
+            set
+            {
+                if (this._DataSource != value)
+                {
+                    this._DataSource = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
 
         #region UserId 変更通知プロパティ
         private string _UserId;
@@ -57,25 +78,6 @@ namespace EntityGenerator.ViewModels
                 if (this._Password != value)
                 {
                     this._Password = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-        #endregion
-
-        #region DataSource 変更通知プロパティ
-        private string _DataSource;
-        /// <summary>
-        /// データソースを取得または設定します。
-        /// </summary>
-        public string DataSource
-        {
-            get { return this._DataSource; }
-            set
-            {
-                if (this._DataSource != value)
-                {
-                    this._DataSource = value;
                     RaisePropertyChanged();
                 }
             }
@@ -210,7 +212,7 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// 初期化。
         /// </summary>
-        public void Initialize()
+        protected override void InitializeCore()
         {
             this.Subscribe(nameof(CheckedItems), () =>
             {
@@ -223,6 +225,8 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public async void Search()
         {
+            if (!base.Validate(nameof(this.DataSource))) return;
+
             this.builder = new OracleConnectionStringBuilder()
             {
                 UserID = this.UserId,

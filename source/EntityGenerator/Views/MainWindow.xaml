@@ -79,7 +79,7 @@
 							Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="80" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -90,21 +90,39 @@
                         </Grid.RowDefinitions>
 
                         <UniformGrid Grid.Column="0" Columns="1">
-                            <TextBlock Text="接続識別子: " />
-                            <TextBlock Text="ユーザID: " />
-                            <TextBlock Text="パスワード: "/>
+                            <TextBlock Text="接続識別子: " HorizontalAlignment="Right" />
+                            <TextBlock Text="ユーザID: " HorizontalAlignment="Right" />
+                            <TextBlock Text="パスワード: " HorizontalAlignment="Right"/>
                         </UniformGrid>
 
                         <UniformGrid Grid.Column="1" Columns="1">
                             <metro:PromptTextBox Prompt="接続識別子"
                                          Margin="0,2"
-                                         Text="{Binding DataSource, Mode=TwoWay}" />
+                                         Text="{Binding DataSource, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="DataSource.Focus" >
+                                        <l:SetFocusAction />
+                                    </l:InteractionMessageTrigger>
+                                </i:Interaction.Triggers>
+                            </metro:PromptTextBox>
                             <metro:PromptTextBox Prompt="ユーザID"
                                          Margin="0,2"
-                                         Text="{Binding UserId, Mode=TwoWay}" />
+                                         Text="{Binding UserId, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="UserId.Focus" >
+                                        <l:SetFocusAction />
+                                    </l:InteractionMessageTrigger>
+                                </i:Interaction.Triggers>
+                            </metro:PromptTextBox>
                             <metro:PromptTextBox Prompt="パスワード"
                                          Margin="0,2"
-                                         Text="{Binding Password, Mode=TwoWay}" />
+                                         Text="{Binding Password, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Password.Focus" >
+                                        <l:SetFocusAction />
+                                    </l:InteractionMessageTrigger>
+                                </i:Interaction.Triggers>
+                            </metro:PromptTextBox>
                         </UniformGrid>
 
                         <UniformGrid Grid.Column="2" Columns="1">
@@ -142,7 +160,7 @@
 							Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="80" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -153,8 +171,8 @@
                         </Grid.RowDefinitions>
 
                         <UniformGrid Grid.Column="0" Columns="1">
-                            <TextBlock Text="名前空間: " />
-                            <TextBlock Text="出力先: " />
+                            <TextBlock Text="名前空間: " HorizontalAlignment="Right" />
+                            <TextBlock Text="出力先: " HorizontalAlignment="Right" />
                         </UniformGrid>
 
                         <UniformGrid Grid.Column="1" Columns="1">

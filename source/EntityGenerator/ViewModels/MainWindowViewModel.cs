@@ -1,12 +1,15 @@
 ﻿using EntityGenerator.Models;
+using EntityGenerator.Properties;
 using EntityGenerator.Views.Controls;
 using Livet;
+using Livet.Messaging;
 using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using WpfUtility.Mvvm;
 
 namespace EntityGenerator.ViewModels
@@ -16,6 +19,8 @@ namespace EntityGenerator.ViewModels
     /// </summary>
     public class MainWindowViewModel : ValidatableViewModel
     {
+        #region Fields
+
         /// <summary>
         /// エンティティ生成クラス。
         /// </summary>
@@ -26,12 +31,15 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         private OracleConnectionStringBuilder builder;
 
+        #endregion
+
         #region DataSource 変更通知プロパティ
         private string _DataSource;
         /// <summary>
         /// データソースを取得または設定します。
         /// </summary>
-        [Required]
+        [Display(Name = "接続先", GroupName = "Connection")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string DataSource
         {
             get { return this._DataSource; }
@@ -51,6 +59,8 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// ユーザIDを取得または設定します。
         /// </summary>
+        [Display(Name = "ユーザID", GroupName = "Connection")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string UserId
         {
             get { return this._UserId; }
@@ -70,6 +80,8 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// パスワードを取得または設定します。
         /// </summary>
+        [Display(Name = "パスワード", GroupName = "Connection")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string Password
         {
             get { return this._Password; }
@@ -225,8 +237,14 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public async void Search()
         {
-            if (!base.Validate(nameof(this.DataSource))) return;
+            // 接続情報の入力検証
+            if (!this.ValidateAll("Connection"))
+            {
+                this.Messenger.Raise(new InteractionMessage(this.GetErrorProperties().First() + ".Focus"));
+                return;
+            }
 
+            // 接続情報の生成
             this.builder = new OracleConnectionStringBuilder()
             {
                 UserID = this.UserId,
@@ -234,6 +252,7 @@ namespace EntityGenerator.ViewModels
                 DataSource = this.DataSource
             };
 
+            // データオブジェクトの検索
             this.IsBusy = true;
             this.DatabaseObjects = await this.generator.SearchDataObjects(this.builder).ConfigureAwait(false);
             this.IsBusy = false;

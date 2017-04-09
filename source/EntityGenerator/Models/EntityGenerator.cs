@@ -86,7 +86,7 @@ namespace EntityGenerator.Models
                         {
                             // クラス定義情報の生成
                             var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
-                            var classDefinition = GetClassDefinition(tableName, tableDefinitinos);
+                            var classDefinition = GetClassDefinition(@namespace, tableName, tableDefinitinos);
 
                             // テンプレートを評価する
                             var tmpl = new EntityTemplate()
@@ -111,15 +111,17 @@ namespace EntityGenerator.Models
         /// <summary>
         /// テーブル定義に従い、クラス定義を取得します。
         /// </summary>
-        /// <param name="tableName"></param>
-        /// <param name="tableDefinitions"></param>
+        /// <param name="@namespace">名前空間</param>
+        /// <param name="tableName">テーブル名</param>
+        /// <param name="tableDefinitions">テーブル定義リスト</param>
         /// <returns>クラス定義</returns>
-        private ClassDefinition GetClassDefinition(string tableName, IEnumerable<TableDefinition> tableDefinitions)
+        private ClassDefinition GetClassDefinition(string @namespace, string tableName, IEnumerable<TableDefinition> tableDefinitions)
         {
             // クラス定義の生成
             var firstDefinition = tableDefinitions.First();
             var classDefinition = new ClassDefinition()
             {
+                Namespace = @namespace,
                 Name = firstDefinition.TableName.SnakeToPascal(),
                 Description = firstDefinition.TableComments
             };

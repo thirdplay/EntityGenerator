@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfUtility;component/Styles/ValidationErrorTemplate.xaml" />
 
                 <ResourceDictionary Source="pack://application:,,,/EntityGenerator;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>

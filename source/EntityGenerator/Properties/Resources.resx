@@ -170,4 +170,7 @@ order by
     TC.COLUMN_ID</value>
     <comment>テーブル定義の取得SQL</comment>
   </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>{0}は必須項目です。</value>
+  </data>
 </root>

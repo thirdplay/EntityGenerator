@@ -102,5 +102,14 @@ namespace EntityGenerator.Properties {
                 return ResourceManager.GetString("Sql_SelectTableDefinition", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   {0}は必須項目です。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Validation_Required {
+            get {
+                return ResourceManager.GetString("Validation_Required", resourceCulture);
+            }
+        }
     }
 }

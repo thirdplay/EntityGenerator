@@ -3,12 +3,10 @@ using EntityGenerator.Properties;
 using EntityGenerator.Views.Controls;
 using Livet;
 using Livet.Messaging;
-using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using WpfUtility.Mvvm;
 

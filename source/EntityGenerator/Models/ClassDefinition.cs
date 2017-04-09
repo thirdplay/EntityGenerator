@@ -14,7 +14,7 @@ namespace EntityGenerator.Models
         /// <summary>
         /// ネームスペース。
         /// </summary>
-        public string Namespace { get; set; };
+        public string Namespace { get; set; }
 
         /// <summary>
         /// クラス名称。

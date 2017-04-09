@@ -1,10 +1,9 @@
 # EntityGenerator
-データベースからエンティティモデルを生成するツールです。  
 [![Build status (master)](https://img.shields.io/appveyor/ci/thirdplay/EntityGenerator/master.svg?style=flat-square)](https://ci.appveyor.com/project/thirdplay/entitygenerator/branch/master)
 [![Release](https://img.shields.io/github/release/thirdplay/EntityGenerator.svg?style=flat-square)](https://github.com/thirdplay/EntityGenerator/releases/latest)
 [![License](https://img.shields.io/github/license/thirdplay/EntityGenerator.svg?style=flat-square)](https://github.com/thirdplay/EntityGenerator/blob/master/LICENSE.txt)
 
-EntityGeneratorは、エンティティ生成ツールです。
+EntityGeneratorは、エンティティ生成ツールです。  
 OracleDatabaseに接続し、テーブル定義に従いエンティティを生成する機能を提供します。
 
 ### 機能

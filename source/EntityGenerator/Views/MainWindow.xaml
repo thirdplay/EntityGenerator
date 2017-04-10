@@ -186,11 +186,11 @@
 
                         <UniformGrid Grid.Column="2" Columns="1">
                             <Button Content="生成"
-                        MinWidth="90"
-                        Margin="4,2"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        IsEnabled="{Binding CanGenerate}">
+                                    MinWidth="90"
+                                    Margin="4,2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    IsEnabled="{Binding CanGenerate}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
                                         <l:LivetCallMethodAction MethodTarget="{Binding}"

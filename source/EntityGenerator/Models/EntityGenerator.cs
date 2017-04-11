@@ -32,25 +32,16 @@ namespace EntityGenerator.Models
                 {
                     using (var conn = new OracleConnection(builder.ToString()))
                     {
-                        // データオブジェクトの検索
-                        var repository = new DatabaseObjectRepository(conn);
-                        var dataObjects = repository.FindDataObjects();
-
-                        // ツリービューソースに変換する
                         var results = new ObservableCollection<CheckTreeSource>();
-                        var owners = dataObjects.Select(x => x.Owner).Distinct();
-                        foreach (string owner in owners)
-                        {
-                            var ownerNode = new CheckTreeSource(owner, true);
-                            var childrens = dataObjects.Where(x => x.Owner == owner);
-                            foreach (var children in childrens)
-                            {
-                                ownerNode.Add(new CheckTreeSource(children.Name, true));
-                            }
-                            results.Add(ownerNode);
-                        }
 
-                        //System.Threading.Thread.Sleep(5000);
+                        // テーブル名とビュー名の検索
+                        var repository = new DatabaseObjectRepository(conn);
+                        var tableNames = repository.FindTableNames();
+                        var viewNames = repository.FindViewNames();
+
+                        // ツリービューソースに変換
+                        results.Add(CreateNode("テーブル", tableNames));
+                        results.Add(CreateNode("ビュー", viewNames));
 
                         return results;
                     }
@@ -106,6 +97,22 @@ namespace EntityGenerator.Models
                     Application.ShowException(ex);
                 }
             });
+        }
+
+        /// <summary>
+        /// ツリービューノードを作成します。
+        /// </summary>
+        /// <param name="header">ラベル</param>
+        /// <param name="children">子要素</param>
+        /// <returns>ノード</returns>
+        private CheckTreeSource CreateNode(string header, IEnumerable<string> children)
+        {
+            var node = new CheckTreeSource(header, true);
+            foreach (string child in children)
+            {
+                node.Add(new CheckTreeSource(child, true));
+            }
+            return node;
         }
 
         /// <summary>

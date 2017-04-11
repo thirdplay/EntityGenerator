@@ -279,7 +279,7 @@ namespace EntityGenerator.ViewModels
             //}
 
             this.IsBusy = true;
-            await this.generator.Generate(this.OutputDestnation, this.builder, this.Namespace, this.CheckedItems);
+            await this.generator.Generate(this.OutputDestnation, this.builder, this.Namespace, this.CheckedItems).ConfigureAwait(false);
             this.IsBusy = false;
         }
     }

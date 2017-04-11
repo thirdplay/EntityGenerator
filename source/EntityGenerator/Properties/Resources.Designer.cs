@@ -61,20 +61,6 @@ namespace EntityGenerator.Properties {
         }
         
         /// <summary>
-        ///   select AT.OWNER, AT.TABLE_NAME as NAME
-        ///from ALL_TABLES AT
-        ///    inner join USER_USERS UU on(
-        ///        UU.USERNAME = AT.OWNER
-        ///    )
-        ///order by AT.OWNER, AT.TABLE_NAME に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Sql_SelectDatabaseObject {
-            get {
-                return ResourceManager.GetString("Sql_SelectDatabaseObject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   select
         ///    TC.TABLE_NAME,
         ///    TABC.COMMENTS as TABLE_COMMENTS,
@@ -100,6 +86,28 @@ namespace EntityGenerator.Properties {
         internal static string Sql_SelectTableDefinition {
             get {
                 return ResourceManager.GetString("Sql_SelectTableDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   select TABLE_NAME
+        ///from USER_TABLES
+        ///order by TABLE_NAME に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Sql_SelectTableNames {
+            get {
+                return ResourceManager.GetString("Sql_SelectTableNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   select VIEW_NAME
+        ///from user_views
+        ///order by VIEW_NAME に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Sql_SelectViewNames {
+            get {
+                return ResourceManager.GetString("Sql_SelectViewNames", resourceCulture);
             }
         }
         

@@ -20,12 +20,21 @@ namespace EntityGenerator.Repositories
         }
 
         /// <summary>
-        /// データオブジェクトを全て取得します。
+        /// テーブル名を取得します。
         /// </summary>
-        /// <returns>データオブジェクトの列挙</returns>
-        public IEnumerable<DatabaseObject> FindDataObjects()
+        /// <returns>テーブル名の列挙</returns>
+        public IEnumerable<string> FindTableNames()
         {
-            return this.Connection.Query<DatabaseObject>(Resources.Sql_SelectDatabaseObject);
+            return this.Connection.Query<string>(Resources.Sql_SelectTableNames);
+        }
+
+        /// <summary>
+        /// ビュー名を取得します。
+        /// </summary>
+        /// <returns>ビュー名の列挙</returns>
+        public IEnumerable<string> FindViewNames()
+        {
+            return this.Connection.Query<string>(Resources.Sql_SelectViewNames);
         }
 
         /// <summary>

@@ -17,12 +17,12 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public bool IsExpanded
         {
-            get { return _IsExpanded; }
+            get { return this._IsExpanded; }
             set
             { 
-                if (_IsExpanded != value)
+                if (this._IsExpanded != value)
                 {
-                    _IsExpanded = value;
+                    this._IsExpanded = value;
                     RaisePropertyChanged();
                 }
             }
@@ -36,12 +36,12 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public bool? IsChecked
         {
-            get { return _IsChecked; }
+            get { return this._IsChecked; }
             set
             { 
-                if (_IsChecked != value)
+                if (this._IsChecked != value)
                 {
-                    _IsChecked = value;
+                    this._IsChecked = value;
                     RaisePropertyChanged();
                 }
             }
@@ -55,12 +55,12 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public string Header
         {
-            get { return _Header; }
+            get { return this._Header; }
             set
             { 
-                if (_Header != value)
+                if (this._Header != value)
                 {
-                    _Header = value;
+                    this._Header = value;
                     RaisePropertyChanged();
                 }
             }
@@ -74,12 +74,12 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public CheckTreeSource Parent
         {
-            get { return _Parent; }
+            get { return this._Parent; }
             set
             { 
-                if (_Parent != value)
+                if (this._Parent != value)
                 {
-                    _Parent = value;
+                    this._Parent = value;
                     RaisePropertyChanged();
                 }
             }
@@ -93,12 +93,12 @@ namespace EntityGenerator.Views.Controls
         /// </summary>
         public ObservableCollection<CheckTreeSource> Children
         {
-            get { return _Children; }
+            get { return this._Children; }
             set
             { 
-                if (_Children != value)
+                if (this._Children != value)
                 {
-                    _Children = value;
+                    this._Children = value;
                     RaisePropertyChanged();
                 }
             }

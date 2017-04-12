@@ -36,6 +36,10 @@
                                      MessageKey="FolderDialog.Open">
             <l:FolderBrowserDialogInteractionMessageAction />
         </l:InteractionMessageTrigger>
+
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Information">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
@@ -145,7 +149,7 @@
         </Expander>
         <Expander Grid.Row="2"
                   Margin="8,0"
-                  IsExpanded="False">
+                  IsExpanded="{Binding IsExpandedGeneration}">
             <Expander.Header>
                 <TextBlock Text="生成情報"
                            Margin="0"
@@ -176,15 +180,53 @@
                         </UniformGrid>
 
                         <UniformGrid Grid.Column="1" Columns="1">
-                            <metro:PromptTextBox Prompt="名前空間"
-                                         Margin="0,2"
-                                         Text="{Binding Namespace, Mode=TwoWay}" />
-                            <metro:PromptTextBox Prompt="出力先"
-                                         Margin="0,2"
-                                         Text="{Binding OutputDestnation, Mode=TwoWay}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="45" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <metro:PromptTextBox Grid.Row="0"
+                                                     Prompt="名前空間"
+                                                     Margin="0,2"
+                                                     Text="{Binding Namespace, Mode=TwoWay}">
+                                    <i:Interaction.Triggers>
+                                        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Namespace.Focus" >
+                                            <l:SetFocusAction />
+                                        </l:InteractionMessageTrigger>
+                                    </i:Interaction.Triggers>
+                                </metro:PromptTextBox>
+                                <metro:PromptTextBox Grid.Row="1"
+                                                     Prompt="出力先"
+                                                     Margin="0,2"
+                                                     Text="{Binding OutputDestnation, Mode=TwoWay}">
+                                    <i:Interaction.Triggers>
+                                        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="OutputDestnation.Focus" >
+                                            <l:SetFocusAction />
+                                        </l:InteractionMessageTrigger>
+                                    </i:Interaction.Triggers>
+                                </metro:PromptTextBox>
+
+                                <Button Grid.Row="1" Grid.Column="1"
+                                        Content="選択"
+                                        Width="45"
+                                        Height="22"
+                                        Margin="4,2,0,2">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                                     MethodName="OpenOutputDestnationSelectionDialog" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </Grid>
                         </UniformGrid>
 
-                        <UniformGrid Grid.Column="2" Columns="1">
+                        <UniformGrid Grid.Column="3" Columns="1">
                             <Button Content="生成"
                                     MinWidth="90"
                                     Margin="4,2"
@@ -207,10 +249,10 @@
                                 Margin="8"
                                 ItemsSource="{Binding DatabaseObjects, Mode=TwoWay}"
                                 CheckedItems="{Binding CheckedItems, Mode=OneWayToSource}" />
-        <toolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}"
+        <toolkit:BusyIndicator Grid.RowSpan="4"
+                               IsBusy="{Binding IsBusy, Mode=OneWay}"
                                Background="{DynamicResource ThemeBrushKey}"
-                               Foreground="{DynamicResource ActiveForegroundBrushKey}"
-                               Grid.RowSpan="4">
+                               Foreground="{DynamicResource ActiveForegroundBrushKey}">
             <toolkit:BusyIndicator.OverlayStyle>
                 <Style TargetType="Rectangle">
                     <Setter Property="Fill"

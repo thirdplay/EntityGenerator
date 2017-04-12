@@ -7,7 +7,6 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,11 +36,9 @@ namespace EntityGenerator.Models
                         // テーブル名とビュー名の検索
                         var repository = new DatabaseObjectRepository(conn);
                         var tableNames = repository.FindTableNames();
-                        var viewNames = repository.FindViewNames();
 
                         // ツリービューソースに変換
-                        results.Add(CreateNode("テーブル", tableNames));
-                        results.Add(CreateNode("ビュー", viewNames));
+                        results.Add(CreateNode(builder.UserID, tableNames));
 
                         return results;
                     }
@@ -61,8 +58,8 @@ namespace EntityGenerator.Models
         /// <param name="builder">接続文字列</param>
         /// <param name="namespace">名前空間</param>
         /// <param name="checkedItems">選択中の項目</param>
-        /// <returns>タスク</returns>
-        public Task Generate(string outputDir, OracleConnectionStringBuilder builder, string @namespace, List<CheckTreeSource> checkedItems)
+        /// <returns>生成結果</returns>
+        public Task<bool> Generate(string outputDir, OracleConnectionStringBuilder builder, string @namespace, List<CheckTreeSource> checkedItems)
         {
             return Task.Run(() =>
             {
@@ -87,14 +84,15 @@ namespace EntityGenerator.Models
                             var generatedText = tmpl.TransformText();
 
                             // エンティティモデルの出力
-                            Debug.WriteLine(generatedText);
                             File.WriteAllText(Path.Combine(outputDir, tableName.SnakeToPascal() + ".cs"), generatedText);
                         }
                     }
+                    return true;
                 }
                 catch (Exception ex)
                 {
                     Application.ShowException(ex);
+                    return false;
                 }
             });
         }

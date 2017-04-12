@@ -29,15 +29,6 @@ namespace EntityGenerator.Repositories
         }
 
         /// <summary>
-        /// ビュー名を取得します。
-        /// </summary>
-        /// <returns>ビュー名の列挙</returns>
-        public IEnumerable<string> FindViewNames()
-        {
-            return this.Connection.Query<string>(Resources.Sql_SelectViewNames);
-        }
-
-        /// <summary>
         /// 指定 <see cref="owner"/> のテーブル定義を全て取得します。
         /// </summary>
         /// <param name="owner">オーナー</param>

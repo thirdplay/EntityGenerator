@@ -1,5 +1,6 @@
 ﻿using EntityGenerator.Configs;
 using EntityGenerator.Properties;
+using EntityGenerator.Serialization;
 using Livet;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace EntityGenerator
         /// </summary>
         static Application()
         {
-            //AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => ReportException(sender, args.ExceptionObject as Exception);
         }
 
         /// <summary>
@@ -51,6 +52,9 @@ namespace EntityGenerator
 
                 // Dapperのマッピング設定
                 DapperConfig.RegisterMappings("EntityGenerator.Entities");
+
+                // アプリケーション設定の読み込み
+                LocalSettingsProvider.Instance.Load();
 
                 // 親メソッド呼び出し
                 base.OnStartup(e);

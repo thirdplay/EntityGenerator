@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("EntityGenerator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("tillable.net")]
 [assembly: AssemblyProduct("EntityGenerator")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017 thirdplay")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

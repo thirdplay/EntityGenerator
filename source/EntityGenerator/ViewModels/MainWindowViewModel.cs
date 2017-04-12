@@ -1,14 +1,18 @@
 ﻿using EntityGenerator.Models;
 using EntityGenerator.Properties;
+using EntityGenerator.Serialization;
 using EntityGenerator.Views.Controls;
-using Livet;
 using Livet.Messaging;
+using Livet.Messaging.IO;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Reactive.Disposables;
 using WpfUtility.Mvvm;
+using Settings = EntityGenerator.Serialization.Settings;
 
 namespace EntityGenerator.ViewModels
 {
@@ -99,6 +103,8 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// 名前空間を取得または設定します。
         /// </summary>
+        [Display(Name = "名前空間", GroupName = "Generation")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string Namespace
         {
             get { return this._Namespace; }
@@ -118,6 +124,8 @@ namespace EntityGenerator.ViewModels
         /// <summary>
         /// 出力先を取得または設定します。
         /// </summary>
+        [Display(Name = "出力先", GroupName = "Generation")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string OutputDestnation
         {
             get { return this._OutputDestnation; }
@@ -189,8 +197,30 @@ namespace EntityGenerator.ViewModels
         }
         #endregion
 
+        #region IsExpandedGeneration 変更通知プロパティ
+        private bool _IsExpandedGeneration;
+        /// <summary>
+        /// 生成情報の展開状態を取得または設定します。
+        /// </summary>
+        public bool IsExpandedGeneration
+        {
+            get { return this._IsExpandedGeneration; }
+            set
+            {
+                if (this._IsExpandedGeneration != value)
+                {
+                    this._IsExpandedGeneration = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
         #region IsBusy 変更通知プロパティ
         private bool _IsBusy;
+        /// <summary>
+        /// ビジー状態を取得または設定します。
+        /// </summary>
         public bool IsBusy
         {
             get { return this._IsBusy; }
@@ -211,12 +241,23 @@ namespace EntityGenerator.ViewModels
         public MainWindowViewModel()
         {
             this.generator = new Models.EntityGenerator();
-#if DEBUG
-            this.DataSource = "XE";
-            this.UserId = "DEMO";
-            this.Password = "DEMO";
-            this.Namespace = "Prototype.Entities";
-#endif
+            Disposable.Create(() =>
+            {
+                // アプリケーション設定の保存
+                Settings.Connection.DataSource.Value = this.DataSource;
+                Settings.Connection.UserId.Value = this.UserId;
+                Settings.Connection.Password.Value = this.Password;
+                Settings.Generation.Namespace.Value = this.Namespace;
+                Settings.Generation.OutputDestnation.Value = this.OutputDestnation;
+                LocalSettingsProvider.Instance.Save();
+            }).AddTo(this);
+
+            // アプリケーション設定の読み込み
+            this.DataSource = Settings.Connection.DataSource;
+            this.UserId = Settings.Connection.UserId;
+            this.Password = Settings.Connection.Password;
+            this.Namespace = Settings.Generation.Namespace;
+            this.OutputDestnation = Settings.Generation.OutputDestnation;
         }
 
         /// <summary>
@@ -254,6 +295,13 @@ namespace EntityGenerator.ViewModels
             this.IsBusy = true;
             this.DatabaseObjects = await this.generator.SearchDataObjects(this.builder).ConfigureAwait(false);
             this.IsBusy = false;
+
+            // 検索結果がある場合
+            if (this.DatabaseObjects.Count > 0)
+            {
+                // 生成情報を展開する
+                this.IsExpandedGeneration = true;
+            }
         }
 
         /// <summary>
@@ -261,26 +309,59 @@ namespace EntityGenerator.ViewModels
         /// </summary>
         public async void Generate()
         {
-            //if (string.IsNullOrEmpty(this.OutputDestnation))
-            //{
-            //    var message = new FolderSelectionMessage("FolderDialog.Open")
-            //    {
-            //        Title = "出力フォルダを指定",
-            //        DialogPreference = Helper.IsWindows8OrGreater
-            //            ? FolderSelectionDialogPreference.CommonItemDialog
-            //            : FolderSelectionDialogPreference.FolderBrowser,
-            //    };
-            //    this.Messenger.Raise(message);
-            //    if (!Directory.Exists(message.Response))
-            //    {
-            //        return;
-            //    }
-            //    this.OutputDestnation = message.Response;
-            //}
+            // 生成情報の入力検証
+            if (!this.ValidateAll("Generation"))
+            {
+                this.Messenger.Raise(new InteractionMessage(this.GetErrorProperties().First() + ".Focus"));
+                return;
+            }
+            // 出力先が存在しない場合はエラー
+            if (!Directory.Exists(this.OutputDestnation))
+            {
+                this.SetError(nameof(this.OutputDestnation), @"出力先が存在しません");
+                this.Messenger.Raise(new InteractionMessage(nameof(this.OutputDestnation) + ".Focus"));
+                return;
+            }
 
             this.IsBusy = true;
-            await this.generator.Generate(this.OutputDestnation, this.builder, this.Namespace, this.CheckedItems).ConfigureAwait(false);
+            var result = await this.generator.Generate(this.OutputDestnation, this.builder, this.Namespace, this.CheckedItems).ConfigureAwait(false);
             this.IsBusy = false;
+
+            if (result)
+            {
+                this.Messenger.Raise(new InformationMessage("エンティティの生成が完了しました。", ProductInfo.Title, "Information"));
+            }
         }
+
+        /// <summary>
+        /// 出力先選択ダイアログを開きます。
+        /// </summary>
+        public void OpenOutputDestnationSelectionDialog()
+        {
+            var message = new FolderSelectionMessage("FolderDialog.Open")
+            {
+                Title = @"出力フォルダを指定",
+                DialogPreference = Helper.IsWindows8OrGreater
+                    ? FolderSelectionDialogPreference.CommonItemDialog
+                    : FolderSelectionDialogPreference.FolderBrowser,
+                SelectedPath = Directory.Exists(this.OutputDestnation) ? this.OutputDestnation : ""
+            };
+            this.Messenger.Raise(message);
+
+            if (Directory.Exists(message.Response))
+            {
+                this.OutputDestnation = message.Response;
+            }
+        }
+
+        /// <summary>
+        /// 保存時の設定に戻します。
+        /// </summary>
+        //private void RevertToSavedSettings()
+        //{
+        //    this.DataSource = Settings.Connection.DataSource;
+        //    this.UserId = Settings.Connection.UserId;
+        //    this.Password = Settings.Connection.Password;
+        //}
     }
 }

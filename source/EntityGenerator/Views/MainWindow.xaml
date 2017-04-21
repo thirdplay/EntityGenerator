@@ -101,8 +101,8 @@
 
                         <UniformGrid Grid.Column="1" Columns="1">
                             <metro:PromptTextBox Prompt="接続識別子"
-                                         Margin="0,2"
-                                         Text="{Binding DataSource, Mode=TwoWay}">
+                                                 Margin="0,2"
+                                                 Text="{Binding DataSource, Mode=TwoWay}">
                                 <i:Interaction.Triggers>
                                     <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="DataSource.Focus" >
                                         <l:SetFocusAction />
@@ -110,8 +110,8 @@
                                 </i:Interaction.Triggers>
                             </metro:PromptTextBox>
                             <metro:PromptTextBox Prompt="ユーザID"
-                                         Margin="0,2"
-                                         Text="{Binding UserId, Mode=TwoWay}">
+                                                 Margin="0,2"
+                                                 Text="{Binding UserId, Mode=TwoWay}">
                                 <i:Interaction.Triggers>
                                     <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="UserId.Focus" >
                                         <l:SetFocusAction />
@@ -119,8 +119,8 @@
                                 </i:Interaction.Triggers>
                             </metro:PromptTextBox>
                             <metro:PromptTextBox Prompt="パスワード"
-                                         Margin="0,2"
-                                         Text="{Binding Password, Mode=TwoWay}">
+                                                 Margin="0,2"
+                                                 Text="{Binding Password, Mode=TwoWay}">
                                 <i:Interaction.Triggers>
                                     <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Password.Focus" >
                                         <l:SetFocusAction />
@@ -131,14 +131,14 @@
 
                         <UniformGrid Grid.Column="2" Columns="1">
                             <Button Content="検索"
-                            MinWidth="90"
-                            Margin="4,2"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom">
+                                    MinWidth="90"
+                                    Margin="4,2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
                                         <l:LivetCallMethodAction MethodTarget="{Binding}"
-                                                         MethodName="Search" />
+                                                                 MethodName="Search" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>

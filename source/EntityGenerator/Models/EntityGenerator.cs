@@ -7,6 +7,8 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +20,19 @@ namespace EntityGenerator.Models
     /// </summary>
     public class EntityGenerator
     {
+        /// <summary>
+        /// 置換設定。
+        /// </summary>
+        private NameValueCollection replaceSettings;
+
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        public EntityGenerator()
+        {
+            this.replaceSettings = ConfigurationManager.GetSection("replaceSettings") as NameValueCollection;
+        }
+
         /// <summary>
         /// データベースオブジェクトを検索します。
         /// </summary>
@@ -135,11 +150,13 @@ namespace EntityGenerator.Models
             classDefinition.Properties = new List<PropertyDefinition>();
             foreach (var tableDefinition in tableDefinitions)
             {
+                var propertyName = tableDefinition.ColumnName.SnakeToPascal();
+                var typeName = this.replaceSettings[propertyName] ?? OracleTypeToCsTypeConverter.Convert(tableDefinition.DataType);
                 var property = new PropertyDefinition()
                 {
-                    Name = tableDefinition.ColumnName.SnakeToPascal(),
+                    Name = propertyName,
                     Description = tableDefinition.ColumnComments,
-                    TypeName = OracleTypeToCsTypeConverter.Convert(tableDefinition.DataType)
+                    TypeName = typeName
                 };
                 classDefinition.Properties.Add(property);
             }

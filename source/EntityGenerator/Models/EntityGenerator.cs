@@ -21,16 +21,10 @@ namespace EntityGenerator.Models
     public class EntityGenerator
     {
         /// <summary>
-        /// 置換設定。
-        /// </summary>
-        private NameValueCollection replaceSettings;
-
-        /// <summary>
         /// コンストラクタ。
         /// </summary>
         public EntityGenerator()
         {
-            this.replaceSettings = ConfigurationManager.GetSection("replaceSettings") as NameValueCollection;
         }
 
         /// <summary>
@@ -151,12 +145,11 @@ namespace EntityGenerator.Models
             foreach (var tableDefinition in tableDefinitions)
             {
                 var propertyName = tableDefinition.ColumnName.SnakeToPascal();
-                var typeName = this.replaceSettings[propertyName] ?? OracleTypeToCsTypeConverter.Convert(tableDefinition.DataType);
                 var property = new PropertyDefinition()
                 {
                     Name = propertyName,
                     Description = tableDefinition.ColumnComments,
-                    TypeName = typeName
+                    TypeName = OracleTypeToCsTypeConverter.Convert(tableDefinition)
                 };
                 classDefinition.Properties.Add(property);
             }

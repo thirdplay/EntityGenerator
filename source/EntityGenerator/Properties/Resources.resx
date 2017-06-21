@@ -151,7 +151,8 @@ from ALL_TAB_COLUMNS TC
             and C.CONSTRAINT_TYPE = 'P'
         )
     ) on (
-        TC.TABLE_NAME = CC.TABLE_NAME
+        TC.OWNER = CC.OWNER
+        and TC.TABLE_NAME = CC.TABLE_NAME
         and TC.COLUMN_NAME = CC.COLUMN_NAME
     )
 where

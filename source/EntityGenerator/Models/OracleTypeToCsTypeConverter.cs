@@ -49,7 +49,7 @@ namespace EntityGenerator.Models
                 {
                     return "int";
                 }
-                // 整数16桁以下の場合はlong
+                // 整数18桁以下の場合はlong
                 else if (tableDefinition.DataPrecision <= 18)
                 {
                     return "long";

@@ -64,7 +64,6 @@ namespace EntityGenerator.Properties {
         ///   select
         ///    TC.TABLE_NAME,
         ///    TABC.COMMENTS as TABLE_COMMENTS,
-        ///    TC.OWNER,
         ///    TC.COLUMN_NAME,
         ///    COLC.COMMENTS as COLUMN_COMMENTS,
         ///    TC.DATA_TYPE,
@@ -76,16 +75,17 @@ namespace EntityGenerator.Properties {
         ///    TC.DATA_PRECISION,
         ///    C.CONSTRAINT_TYPE,
         ///    CC.POSITION
-        ///from ALL_TAB_COLUMNS TC
-        ///    inner join ALL_TAB_COMMENTS TABC on(
-        ///        TABC.OWNER = TC.OWNER
-        ///        and TABC.TABLE_NAME = TC.TABLE_NAME
+        ///from USER_TAB_COLUMNS TC
+        ///    left join USER_TAB_COMMENTS TABC on(
+        ///        TABC.TABLE_NAME = TC.TABLE_NAME
         ///    )
-        ///    inner join ALL_COL_COMMENTS COLC  [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///    left join USER_COL_COMMENTS COLC on(
+        ///        COLC.TABLE_NAME = TC.TABLE_NAME
+        ///    [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string Sql_SelectTableDefinition {
+        internal static string Sql_SelectColumnDefinition {
             get {
-                return ResourceManager.GetString("Sql_SelectTableDefinition", resourceCulture);
+                return ResourceManager.GetString("Sql_SelectColumnDefinition", resourceCulture);
             }
         }
         

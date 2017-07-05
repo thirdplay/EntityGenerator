@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EntityGenerator.Entities
+﻿namespace EntityGenerator.Entities
 {
     /// <summary>
-    /// テーブル定義を表すクラス。
+    /// カラム定義を表すクラス。
     /// </summary>
-    public class TableDefinition
+    public class ColumnDefinition
     {
         /// <summary>
         /// テーブル名
@@ -33,7 +26,7 @@ namespace EntityGenerator.Entities
         public string ColumnName { get; set; }
 
         /// <summary>
-        /// カラム名
+        /// カラムコメント
         /// </summary>
         public string ColumnComments { get; set; }
 

@@ -29,15 +29,14 @@ namespace EntityGenerator.Repositories
         }
 
         /// <summary>
-        /// 指定 <see cref="owner"/> のテーブル定義を全て取得します。
+        /// 指定 <see cref="owner"/> のカラム定義を全て取得します。
         /// </summary>
-        /// <param name="owner">オーナー</param>
         /// <param name="tableName">テーブル名</param>
-        /// <returns>テーブル定義</returns>
-        public IEnumerable<TableDefinition> FindTableDefinitions(string owner, string tableName)
+        /// <returns>カラム定義一覧</returns>
+        public IEnumerable<ColumnDefinition> FindColumnDefinitions(string tableName)
         {
-            return this.Connection.Query<TableDefinition>(
-                Resources.Sql_SelectTableDefinition, new { Owner = owner, TableName = tableName });
+            return this.Connection.Query<ColumnDefinition>(
+                Resources.Sql_SelectColumnDefinition, new { TableName = tableName });
         }
     }
 }

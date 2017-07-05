@@ -180,7 +180,7 @@
     <Compile Include="Models\EntityGenerator.cs" />
     <Compile Include="Models\EntityTemplate.cs" />
     <Compile Include="Models\Helper.cs" />
-    <Compile Include="Entities\TableDefinition.cs" />
+    <Compile Include="Entities\ColumnDefinition.cs" />
     <Compile Include="Models\PropertyDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\OracleTypeToCsTypeConverter.cs" />

@@ -37,27 +37,27 @@ namespace EntityGenerator.Models
         /// <summary>
         /// Oracleデータ型をC#データ型に変換します。
         /// </summary>
-        /// <param name="oracleDataType">Oracleデータ型</param>
+        /// <param name="columnDefinition">カラム定義</param>
         /// <returns>C#データ型</returns>
-        public static string Convert(TableDefinition tableDefinition)
+        public static string Convert(ColumnDefinition columnDefinition)
         {
             // NUMBER型の整数の場合、桁数ごとに個別に変換する
-            if (tableDefinition.DataType == "NUMBER" && tableDefinition.DataScale == 0)
+            if (columnDefinition.DataType == "NUMBER" && columnDefinition.DataScale == 0)
             {
-                // 整数10桁以下の場合はint
-                if (tableDefinition.DataPrecision <= 10)
+                // 整数9桁以下の場合はint
+                if (columnDefinition.DataPrecision <= 9)
                 {
                     return "int";
                 }
                 // 整数18桁以下の場合はlong
-                else if (tableDefinition.DataPrecision <= 18)
+                else if (columnDefinition.DataPrecision <= 18)
                 {
                     return "long";
                 }
             }
-            if (TypeNames.ContainsKey(tableDefinition.DataType))
+            if (TypeNames.ContainsKey(columnDefinition.DataType))
             {
-                return TypeNames[tableDefinition.DataType];
+                return TypeNames[columnDefinition.DataType];
             }
             return "UnknownType";
         }

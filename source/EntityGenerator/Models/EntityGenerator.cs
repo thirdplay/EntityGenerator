@@ -7,8 +7,6 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,7 +80,7 @@ namespace EntityGenerator.Models
                         foreach (var tableName in tableNames)
                         {
                             // クラス定義情報の生成
-                            var tableDefinitinos = repository.FindTableDefinitions(builder.UserID, tableName);
+                            var tableDefinitinos = repository.FindColumnDefinitions(tableName);
                             var classDefinition = GetClassDefinition(@namespace, tableName, tableDefinitinos);
 
                             // テンプレートを評価する
@@ -127,12 +125,12 @@ namespace EntityGenerator.Models
         /// </summary>
         /// <param name="@namespace">名前空間</param>
         /// <param name="tableName">テーブル名</param>
-        /// <param name="tableDefinitions">テーブル定義リスト</param>
+        /// <param name="columnDefinitions">カラム定義一覧</param>
         /// <returns>クラス定義</returns>
-        private ClassDefinition GetClassDefinition(string @namespace, string tableName, IEnumerable<TableDefinition> tableDefinitions)
+        private ClassDefinition GetClassDefinition(string @namespace, string tableName, IEnumerable<ColumnDefinition> columnDefinitions)
         {
             // クラス定義の生成
-            var firstDefinition = tableDefinitions.First();
+            var firstDefinition = columnDefinitions.First();
             var classDefinition = new ClassDefinition()
             {
                 Namespace = @namespace,
@@ -142,14 +140,14 @@ namespace EntityGenerator.Models
 
             // プロパティ定義の生成
             classDefinition.Properties = new List<PropertyDefinition>();
-            foreach (var tableDefinition in tableDefinitions)
+            foreach (var columnDefinition in columnDefinitions)
             {
-                var propertyName = tableDefinition.ColumnName.SnakeToPascal();
+                var propertyName = columnDefinition.ColumnName.SnakeToPascal();
                 var property = new PropertyDefinition()
                 {
                     Name = propertyName,
-                    Description = tableDefinition.ColumnComments,
-                    TypeName = OracleTypeToCsTypeConverter.Convert(tableDefinition)
+                    Description = columnDefinition.ColumnComments,
+                    TypeName = OracleTypeToCsTypeConverter.Convert(columnDefinition)
                 };
                 classDefinition.Properties.Add(property);
             }

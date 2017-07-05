@@ -35,31 +35,54 @@ namespace EntityGenerator.Models
         };
 
         /// <summary>
+        /// NULL許容型の型名。
+        /// </summary>
+        private static readonly string[] NullableTypeNames = new[] {
+            "string",
+            "Byte[]",
+        };
+
+        /// <summary>
         /// Oracleデータ型をC#データ型に変換します。
         /// </summary>
         /// <param name="columnDefinition">カラム定義</param>
         /// <returns>C#データ型</returns>
         public static string Convert(ColumnDefinition columnDefinition)
         {
+            string result = "UnknownType";
+
+            if (TypeNames.ContainsKey(columnDefinition.DataType))
+            {
+                result = TypeNames[columnDefinition.DataType];
+            }
+
             // NUMBER型の整数の場合、桁数ごとに個別に変換する
             if (columnDefinition.DataType == "NUMBER" && columnDefinition.DataScale == 0)
             {
                 // 整数9桁以下の場合はint
                 if (columnDefinition.DataPrecision <= 9)
                 {
-                    return "int";
+                    result = "int";
                 }
                 // 整数18桁以下の場合はlong
                 else if (columnDefinition.DataPrecision <= 18)
                 {
-                    return "long";
+                    result = "long";
                 }
             }
-            if (TypeNames.ContainsKey(columnDefinition.DataType))
+
+            // カラムがNULLを許容する場合
+            if (columnDefinition.Nullable == "Y")
             {
-                return TypeNames[columnDefinition.DataType];
+                // C#データ型が非NULL許容型の場合
+                if (!NullableTypeNames.Contains(result))
+                {
+                    // NULL許容型に変更する
+                    result += "?";
+                }
             }
-            return "UnknownType";
+
+            return result;
         }
     }
 }

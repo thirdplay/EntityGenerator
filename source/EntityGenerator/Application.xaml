@@ -1,0 +1,21 @@
+﻿<Application x:Class="EntityGenerator.Application"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Views\MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfUtility;component/Styles/ValidationErrorTemplate.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/EntityGenerator;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

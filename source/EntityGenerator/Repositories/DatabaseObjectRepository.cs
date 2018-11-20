@@ -29,7 +29,7 @@ namespace EntityGenerator.Repositories
         }
 
         /// <summary>
-        /// 指定 <see cref="owner"/> のカラム定義を全て取得します。
+        /// 指定 <see cref="tableName"/> のカラム定義を全て取得します。
         /// </summary>
         /// <param name="tableName">テーブル名</param>
         /// <returns>カラム定義一覧</returns>

@@ -28,7 +28,7 @@ namespace EntityGenerator.Models
         /// <summary>
         /// データベースオブジェクトを検索します。
         /// </summary>
-        /// <param name="connectionString">接続文字列</param>
+        /// <param name="builder">接続文字列</param>
         /// <returns>データベースオブジェクトのコレクション</returns>
         public Task<ObservableCollection<CheckTreeSource>> SearchDataObjects(OracleConnectionStringBuilder builder)
         {
